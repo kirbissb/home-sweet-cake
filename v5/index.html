@@ -1017,7 +1017,7 @@ function renderLists() {
 function renderLayers() {
   const box = $("#layersList");
   if (!box) return;
-  box.innerHTML = BANDS.slice().reverse().map(b => {
+  box.innerHTML = BANDS.slice().reverse().filter(b => b.key !== "b_stand").map(b => {   // CEO 02.10: no 'stand' row - people know what a stand is
     const to = Math.min(b.to, 0.87);   // the stand row stops at the rim (below it: the stem and the backdrop)
     return `<li><span class="sl" style="--from:${b.from};--to:${to}"><img src="img/snickers-cut.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></span><b>${esc(t(b.key))}</b></li>`;
   }).join("");
@@ -1025,7 +1025,7 @@ function renderLayers() {
 function renderLabels() {
   renderLayers();
   $("#labels").innerHTML = BANDS.map((b, i) =>
-    `<li data-i="${i}" style="--y:${b.y};--x:${b.x}">${esc(t(b.key))}</li>`).join("");
+    `<li data-i="${i}" style="--y:${b.y};--x:${b.x}${b.key === "b_stand" ? ";visibility:hidden" : ""}">${b.key === "b_stand" ? "" : esc(t(b.key))}</li>`).join("");   // stand stays in the picture, unlabelled (CEO 02.10)
   painted = null;
 }
 
