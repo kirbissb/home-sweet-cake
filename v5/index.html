@@ -168,6 +168,7 @@ u.ph{text-decoration:underline dotted;text-decoration-thickness:1.5px;text-under
 .pl li.standin img{outline:1.5px dashed rgba(43,24,16,.45);outline-offset:2px;border-radius:8px}
 .shot figcaption{margin-top:8px;font-size:15px;line-height:1.35;color:var(--ink2)}
 .shot figcaption b{display:block;color:var(--ink);font-weight:600;font-size:17px}
+.shot figcaption .pr{display:block;margin-top:4px;color:var(--ink);font-weight:600;font-size:16px}   /* CEO 02.10: the made cakes carry their price */
 /* everyday list: the one item that has a photo carries it in its own row, so the photo cannot be read as another item */
 .pl li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;min-height:54px;padding:10px 0;border-bottom:1px solid var(--line)}
 .pl li:first-child{border-top:1px solid var(--line)}
@@ -219,6 +220,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 
 /* phone bottom bar */
 .bar{display:none}
+/* festive whole cake on the phone first screen (CEO 02.10, phone only; desktop keeps its stage) */
+.hero-cake{display:none}
 
 /* ---------- phones and narrow tablets: no sticky stage (owner, 02.10: "give up this cake in the mobile version") ----------
    The whole cut photo is an ordinary picture at the top of the first screen and scrolls away with the page; the
@@ -236,6 +239,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
   .stage{position:relative;top:auto;width:100%;height:var(--sh);overflow:hidden;background:var(--ground)}
   .stage .cake{left:0;bottom:auto;top:calc(var(--sh) / .6 * -.257);width:calc(var(--sh) / .9);height:calc(var(--sh) / .6);aspect-ratio:auto}
   .stage .labels,.stage .cake-slab{display:none}
+  #taste h2{display:none}   /* CEO 02.10 22:0x: no 'Смак видно на розрізі' heading on phones */
   .stage{display:none}   /* CEO 02.10 21:5x: no cake on the phone first screen - the cut is shown once, in the layers block */
   .story{padding:0 16px}
   .blk,.blk.last{min-height:0;padding:30px 0 40px;scroll-margin-top:var(--hh)}
@@ -244,6 +248,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
   .hero h1 .h1b{margin-top:8px;font-size:17px}
   .hero .sub{margin-top:10px;font-size:15.5px;line-height:1.4}
   .hero .btn{display:none}
+  .hero-cake{display:block;align-self:center;width:auto;max-width:100%;height:min(calc(100vh - var(--hh) - var(--bar) - 214px),calc((100vw - 32px) * 1.15));margin:0 auto 10px}   /* the whole cake above the headline: column-wide, never so tall that the headline and sub-line leave the screen */
   .blk h2{font-size:27px;margin-bottom:12px}
   .blk p.lead{font-size:17px}
   .duo{gap:12px}
@@ -261,6 +266,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 @supports (height:1svh){
   @media (max-width:899px) and (min-height:501px){
     :root{--sh:min(40svh,calc(100svh - var(--hh) - var(--bar) - 230px))}
+    .hero-cake{height:min(calc(100svh - var(--hh) - var(--bar) - 214px),calc((100vw - 32px) * 1.15))}
   }
 }
 /* narrow phones (360, 375): brand, draft note and the 44 px language buttons must share one row */
@@ -436,6 +442,7 @@ textarea::placeholder{color:#7a5f54}
   <div class="story" id="story">
 
     <section class="blk hero" data-band="0">
+      <img class="hero-cake" src="img/hero-cake.webp" width="900" height="1035" alt="Святковий торт" data-i18n-alt="heroCakeAlt" decoding="async">
       <h1 data-i18n-html="h1">Домашній тортик за <u class="ph">3 дні</u> <span class="h1b">у Кам'янці-Подільському. Без сухих коржів і прісного крему.</span></h1>
       <p class="sub" data-i18n="heroSub">Гортайте вниз - зберемо тортик шар за шаром. Начинку, вагу і ціну видно одразу.</p>
       <button type="button" class="btn js-order" data-i18n="cta">Зібрати тортик</button>
@@ -468,11 +475,11 @@ textarea::placeholder{color:#7a5f54}
         <div class="duo">
           <figure class="shot standin" data-photo="roses">
             <span class="frame"><img src="img/roses.webp" width="757" height="1068" alt="Торт з рожевими вафельними трояндами в прозорій коробці" data-i18n-alt="altRoses" loading="lazy" decoding="async"></span>
-            <figcaption data-i18n-html="celRoses"><b>З вафельними трояндами</b>Кожну троянду роблю вручну. На цей тортик пішло 30.</figcaption>
+            <figcaption data-i18n-html="celRoses"><b>З вафельними трояндами</b>Кожну троянду роблю вручну. На цей тортик пішло 30.<span class="pr">7 500 грн</span></figcaption>
           </figure>
           <figure class="shot standin" data-photo="dani-outside">
             <span class="frame"><img src="img/dani-outside.webp" width="906" height="908" alt="Білий торт з написом Happy Birthday" data-i18n-alt="altDani" loading="lazy" decoding="async"></span>
-            <figcaption data-i18n-html="celDani"><b>З написом</b>Текст і кольори обираєте ви.</figcaption>
+            <figcaption data-i18n-html="celDani"><b>З написом</b>Текст і кольори обираєте ви.<span class="pr">3 500 грн</span></figcaption>
           </figure>
         </div>
       </div>
@@ -610,6 +617,7 @@ textarea::placeholder{color:#7a5f54}
   "cta": "Зібрати тортик",
   "h1": "Домашній тортик за <u class=\"ph\">3 дні</u> <span class=\"h1b\">у Кам'янці-Подільському. Без сухих коржів і прісного крему.</span>",
   "heroSub": "Гортайте вниз - зберемо тортик шар за шаром. Начинку, вагу і ціну видно одразу.",
+  "heroCakeAlt": "Святковий торт",
   "stageAlt": "Розріз шоколадного торта з карамеллю та арахісом на білій підставці",
   "b_stand": "підставка",
   "b_sponge": "шоколадний бісквіт",
@@ -632,8 +640,8 @@ textarea::placeholder{color:#7a5f54}
   "uah": "грн",
   "kg": "кг",
   "celMin": "Найменший тортик - 1,5 кг. Декор окремо.",
-  "celRoses": "<b>З вафельними трояндами</b>Кожну троянду роблю вручну. На цей тортик пішло 30.",
-  "celDani": "<b>З написом</b>Текст і кольори обираєте ви.",
+  "celRoses": "<b>З вафельними трояндами</b>Кожну троянду роблю вручну. На цей тортик пішло 30.<span class=\"pr\">7 500 грн</span>",
+  "celDani": "<b>З написом</b>Текст і кольори обираєте ви.<span class=\"pr\">3 500 грн</span>",
   "altRoses": "Торт з рожевими вафельними трояндами в прозорій коробці",
   "altDani": "Білий торт з написом Happy Birthday",
   "altCheese": "Чізкейк з карамеллю і арахісом",
@@ -752,6 +760,7 @@ textarea::placeholder{color:#7a5f54}
   "cta": "Собрать тортик",
   "h1": "Домашний тортик за <u class=\"ph\">3 дня</u> <span class=\"h1b\">в Каменце-Подольском. Без сухих коржей и пресного крема.</span>",
   "heroSub": "Листайте вниз - соберём тортик слой за слоем. Начинку, вес и цену видно сразу.",
+  "heroCakeAlt": "Праздничный торт",
   "stageAlt": "Разрез шоколадного торта с карамелью и арахисом на белой подставке",
   "b_stand": "подставка",
   "b_sponge": "шоколадный бисквит",
@@ -774,8 +783,8 @@ textarea::placeholder{color:#7a5f54}
   "uah": "грн",
   "kg": "кг",
   "celMin": "Самый маленький тортик - 1,5 кг. Декор отдельно.",
-  "celRoses": "<b>С вафельными розами</b>Каждую розу делаю вручную. На этот тортик ушло 30.",
-  "celDani": "<b>С надписью</b>Текст и цвета выбираете вы.",
+  "celRoses": "<b>С вафельными розами</b>Каждую розу делаю вручную. На этот тортик ушло 30.<span class=\"pr\">7 500 грн</span>",
+  "celDani": "<b>С надписью</b>Текст и цвета выбираете вы.<span class=\"pr\">3 500 грн</span>",
   "altRoses": "Торт с розовыми вафельными розами в прозрачной коробке",
   "altDani": "Белый торт с надписью Happy Birthday",
   "altCheese": "Чизкейк с карамелью и арахисом",
