@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14352A">
+<title>Home Sweet Cake - документи</title>
+<!--
+  Home Sweet Cake site-v6 - documents page (ROUND2 Job 2, 02.10.2026). DRAFT.
+  Four sections, each with its heading and ONLY the fixed draft body from ROUND2-2026-10-02.md. No legal text is
+  written here: Anya and the CEO write it before publication. Language follows the main page (?lang= from the footer
+  link, else the saved language of index.html), with its own UA / RU switch.
+-->
+<style>
+@font-face{font-family:"HSC Display";src:url("fonts/sofia-sans-xcond-cyrillic-intl.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"HSC Display";src:url("fonts/sofia-sans-xcond-latin.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"HSC Text";src:url("fonts/sofia-sans-cyrillic-intl.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"HSC Text";src:url("fonts/sofia-sans-latin.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{color-scheme:dark;--ground:#14352A;--ground-deep:#0E271F;--card:#1C4536;--line:#34634F;--ink:#F6EFE5;--ink-2:#BFD2C1;--butter:#F2DD82;--butter-ink:#14352A;
+  --d:"HSC Display","Arial Narrow",system-ui,sans-serif;--t:"HSC Text",system-ui,-apple-system,"Segoe UI",sans-serif;--gut:16px}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.45 var(--t);-webkit-font-smoothing:antialiased}
+h1,h2,p,ul{margin:0;padding:0}
+ul{list-style:none}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
+.draft{background:var(--ground-deep);color:var(--butter);font:600 12.5px/1.3 var(--t);letter-spacing:.02em;padding:7px var(--gut);text-align:center}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px var(--gut)}
+.brand{font:800 25px/1 var(--d);letter-spacing:.035em;text-transform:uppercase;text-decoration:none;padding:12px 0}
+.lang{display:flex;gap:2px}
+.lang button{min-width:46px;min-height:44px;border:0;background:none;font:700 15px/1 var(--t);letter-spacing:.06em;color:var(--ink-2);cursor:pointer}
+.lang button[aria-pressed="true"]{color:var(--butter);box-shadow:inset 0 0 0 0 transparent,inset 0 -3px 0 var(--butter)}
+main{max-width:720px;margin:0 auto;padding:18px var(--gut) 56px}
+.back{display:inline-block;min-height:44px;padding:11px 0;font-weight:600;text-decoration:underline;text-decoration-color:var(--butter);text-decoration-thickness:2px;text-underline-offset:5px}
+h1{margin-top:14px;font:800 clamp(44px,12vw,72px)/.95 var(--d);letter-spacing:.004em}
+.toc{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;border-top:1px solid var(--line);padding-top:6px}
+.toc a{display:block;min-height:44px;padding:11px 0;color:var(--ink-2)}
+section{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);scroll-margin-top:12px}
+section:target h2{color:var(--butter)}
+h2{font:800 clamp(30px,8vw,40px)/1 var(--d);letter-spacing:.01em}
+.body{margin-top:12px;padding:14px 16px;border-left:4px solid var(--butter);background:var(--card);color:var(--ink)}
+.copy{margin-top:40px;font-size:13.5px;color:#8FAA96}
+@media (hover:hover) and (pointer:fine){ .toc a:hover,.back:hover{color:var(--butter)} .lang button:hover{color:var(--ink)} }
+@media (min-width:960px){ :root{--gut:56px} main{padding-top:30px} }
+</style>
+</head>
+<body>
+<p class="draft" id="draft"></p>
+<header class="top">
+  <a class="brand" href="index.html" id="brand">Home Sweet Cake</a>
+  <div class="lang" role="group" id="lang">
+    <button type="button" data-lang="uk" aria-pressed="true">UA</button>
+    <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+  </div>
+</header>
+<main>
+  <a class="back" href="index.html" id="back"></a>
+  <h1 id="h1"></h1>
+  <ul class="toc" id="toc"></ul>
+  <div id="docs"></div>
+  <p class="copy">© 2026 Home Sweet Cake</p>
+</main>
+<script>
+(function () {
+"use strict";
+var KEY = "hsc-v6";
+var T = {
+  uk: { title: "Home Sweet Cake - документи", draft: "DRAFT: ціни-заглушки. Терміни й передоплата теж.", h1: "Документи", back: "Назад до торта", group: "Мова сайту",
+        privacy: "Політика конфіденційності", offer: "Публічна оферта", payment: "Оплата і доставка", returns: "Повернення та обмін",
+        body: "Чернетка. Текст цього розділу ще не написаний - підготуємо його разом з Анею перед публікацією." },
+  ru: { title: "Home Sweet Cake - документы", draft: "DRAFT: цены-заглушки. Сроки и предоплата тоже.", h1: "Документы", back: "Назад к торту", group: "Язык сайта",
+        privacy: "Политика конфиденциальности", offer: "Публичная оферта", payment: "Оплата и доставка", returns: "Возврат и обмен",
+        body: "Черновик. Текст этого раздела ещё не написан - подготовим его вместе с Аней перед публикацией." }
+};
+var IDS = ["privacy", "offer", "payment", "returns"];
+function readSaved() { try { return JSON.parse(localStorage.getItem(KEY) || "null") || {}; } catch (e) { return {}; } }
+var q = /[?&]lang=(uk|ru)\b/.exec(location.search);
+var lang = q ? q[1] : (T[readSaved().lang] ? readSaved().lang : "uk");
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function render() {
+  var t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title;
+  document.getElementById("draft").textContent = t.draft;
+  document.getElementById("h1").textContent = t.h1;
+  document.getElementById("back").textContent = t.back;
+  document.getElementById("lang").setAttribute("aria-label", t.group);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang); });
+  document.getElementById("toc").innerHTML = IDS.map(function (id) { return '<li><a href="#' + id + '">' + esc(t[id]) + "</a></li>"; }).join("");
+  document.getElementById("docs").innerHTML = IDS.map(function (id) {
+    return '<section id="' + id + '"><h2>' + esc(t[id]) + '</h2><p class="body">' + esc(t.body) + "</p></section>";
+  }).join("");
+}
+document.getElementById("lang").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-lang]");
+  if (!b) return;
+  lang = b.getAttribute("data-lang");
+  /* keep the main page in the same language */
+  try { var s = readSaved(); s.lang = lang; localStorage.setItem(KEY, JSON.stringify(s)); } catch (err) {}
+  if (history.replaceState) history.replaceState(null, "", "?lang=" + lang + location.hash);
+  render();
+});
+render();
+if (location.hash) { var el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+})();
+</script>
+</body>
+</html>

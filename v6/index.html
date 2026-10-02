@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14352A">
+<title>Home Sweet Cake - зберіть свій торт за 2 хвилини</title>
+<!--
+  Home Sweet Cake - variant site-v6: THE QUIZ IS THE SITE (internal DRAFT, 01.10.2026).
+  No long page. Cover -> one question per screen with its own route:
+  #filling -> #weight -> #decor -> #date -> #summary ; second short path: #everyday -> #date -> #summary.
+
+  HEADLINES AND SUBHEADLINES FOR REVIEW (UA / RU)
+  Cover h1      : Зберіть свій торт за 2 хвилини / Соберите свой торт за 2 минуты
+  Cover sub     : Домашні торти на замовлення в Кам'янці-Подільському. Оберіть начинку й вагу - одразу побачите ціну,
+                  без «ціна в дірект». / Домашние торты на заказ в Каменце-Подольском. Выберите начинку и вес - сразу
+                  увидите цену, без «цена в директ».
+                  (Becker shape: thing = your cake, timeframe = 2 minutes, city, without = "price in DM" - 19 of 21
+                  Kamianets accounts hide prices, research B2.)
+  Cover button  : Зібрати торт / Собрать торт
+  Cover 2nd path: Повсякденні: чизкейк, рулет, запіканка / Повседневные: чизкейк, рулет, запеканка
+  Step 1        : Яка начинка всередині? / Какая начинка внутри?
+                  Ціна залежить від начинки. Біля кожної - усі шари, щоб ви знали, що всередині.
+  Step 2        : Якої ваги торт? / Какой вес торта?
+                  Рахуємо 150 г на гостя. Зважуємо готовий торт - платите за фактичну вагу.
+  Step 3        : Який декор хочете? / Какой декор хотите?
+                  Можна обрати кілька. Декор рахуємо окремо: ціну Аня назве в чаті.
+  Step 4        : На коли потрібен торт? / На когда нужен торт?
+                  Замовляйте щонайменше за 3 дні до свята.
+  Step 5        : Ось ваш торт / Вот ваш торт ; block "Що буде далі" / "Что будет дальше" ;
+                  "Куди надіслати замовлення?" / "Куда отправить заказ?"
+  Everyday      : Що беремо на щодень? / Что берём на каждый день? ; summary: Ось ваше замовлення / Вот ваш заказ
+
+  PLACEHOLDERS (Anya confirms or replaces): every price; the 8 fillings (from her course list - only what she really
+  makes stays); lead time 3 days; "передоплата" without an amount; roll weight "≈ 600 г", portion "250 г"; phone and
+  messenger handles in CONFIG; the reviews line at the filling step; the "about Anya" line at the summary.
+  PHOTOS (round 2, 02.10.2026): snickers-cut and berry-cut are real cuts, full-size 1024x1536, drawn large. roses,
+  dani-outside and cheesecake are STAND-INS: framed prints <= 360 px with a DRAFT label, never large. img/photos.js
+  (written by tools/build_img.py) carries each photo's natural size and stand-in flag; the swap is: drop the new files
+  into photos/processed/, run tools/build_img.py, nothing else (see STATE.md).
+  Fillings and items without a photo show a drawn layer scheme, the cake drawn from above, the calendar leaf or a paper
+  label marked "Фото буде" - never stock.
+-->
+<style>
+/* Fonts: Sofia Sans + Sofia Sans Extra Condensed (SIL OFL), self-hosted. The Cyrillic files are the "-intl" builds
+   made by tools/freeze_fonts.py: Sofia defaults to Bulgarian letterforms, the build makes the international ones default. */
+@font-face{font-family:"HSC Display";src:url("fonts/sofia-sans-xcond-cyrillic-intl.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"HSC Display";src:url("fonts/sofia-sans-xcond-latin.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"HSC Text";src:url("fonts/sofia-sans-cyrillic-intl.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"HSC Text";src:url("fonts/sofia-sans-latin.woff2") format("woff2");font-weight:1 1000;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  color-scheme:dark;
+  --ground:#14352A;      /* the page: deep pastry-box green */
+  --ground-deep:#0E271F; /* draft strip */
+  --card:#1C4536;        /* answer rows */
+  --card-hi:#245241;     /* hover */
+  --line:#34634F;
+  --ink:#F6EFE5;         /* text on green */
+  --ink-2:#BFD2C1;       /* secondary text, tinted from the ground hue */
+  --butter:#F2DD82;      /* the one accent: action, selection, progress */
+  --butter-ink:#14352A;
+  --blush:#DDC3B9;       /* the stage ground = exactly the flat backdrop of the cut-out photos (221,195,185) */
+  --paper:#FBF7F0;       /* paper objects on the stage */
+  --d:"HSC Display","Arial Narrow",system-ui,sans-serif;
+  --t:"HSC Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gut:16px;
+  --stage-h:min(36dvh,320px);
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.45 var(--t);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:lining-nums}
+::selection{background:var(--butter);color:var(--butter-ink)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+h1,h2,h3,p,ol,ul,dl,dd{margin:0;padding:0}
+ol,ul{list-style:none}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
+.opt[aria-pressed="true"]:focus-visible,.btn-pri:focus-visible{outline-color:var(--ink)}
+svg{display:block;flex:none}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- draft strip ---------- */
+.draft{background:var(--ground-deep);color:var(--butter);font:600 12.5px/1.3 var(--t);letter-spacing:.02em;padding:7px var(--gut);text-align:center}
+
+/* ---------- shell ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px var(--gut) 6px}
+.brand{font:800 25px/1 var(--d);letter-spacing:.035em;text-transform:uppercase;text-decoration:none;padding:12px 0;color:var(--ink)}
+.lang{display:flex;gap:2px}
+.lang button{min-width:46px;min-height:44px;border:0;background:none;font:700 15px/1 var(--t);letter-spacing:.06em;color:var(--ink-2)}
+.lang button[aria-pressed="true"]{color:var(--butter);box-shadow:inset 0 -3px 0 var(--butter)}
+
+/* The picture panel: the stage (one picture, replaced on every answer) + the ticket (the running order under it). */
+.panel{height:var(--stage-h);display:flex;flex-direction:column;background:var(--blush);color:var(--butter-ink)}
+.app[data-sticky="1"] .panel{position:sticky;top:0;z-index:5}
+.stage{position:relative;flex:1;min-height:0;background:var(--blush);overflow:hidden;color:var(--butter-ink);container-type:size}
+.st-layer{position:absolute;inset:0;display:grid;place-items:center;background:var(--blush)}
+/* PHOTO SHARPNESS RULE (ROUND2 Job 4): a photo is never drawn wider than 0.75 x its natural width.
+   Large photos: the box is capped at 0.75 x the natural size on both axes (--mw / --mh, from img/photos.js), so the
+   object-fit scale can never pass 0.75; on a slot bigger than that the photo sits centred on the backdrop.
+   Stand-ins (photos.js standin:true) are never large: they are prints, at most 360 px on the long side. */
+.pic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.st-img{display:block;width:100%;height:100%;max-width:var(--mw);max-height:var(--mh);object-fit:cover;object-position:var(--pos-m,50% 50%)}
+.st-img.whole{object-fit:contain;width:calc(100% - 48px);height:calc(100% - 48px)}
+
+/* Scenes: a composed picture made of a drawing, a framed print and the words of the answer. */
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:14px var(--gut)}
+.say{min-width:0;max-width:260px}
+.say-k{font:700 12px/1.2 var(--t);letter-spacing:.08em;text-transform:uppercase;color:#3D4F3F}
+.say-v{margin-top:4px;font:800 34px/.95 var(--d);letter-spacing:.005em;text-wrap:balance;font-variant-numeric:lining-nums}
+.say-s{margin-top:6px;font:600 15px/1.3 var(--t);text-wrap:pretty}
+.say-s + .say-s{margin-top:2px;font-weight:500}
+/* A framed print: white mat, soft shadow, the draft label printed on the mat (never on the photo). */
+.print{margin:0;flex:none;width:min-content;background:#fff;padding:9px 9px 0;box-shadow:0 18px 30px -16px rgba(74,40,28,.55),0 1px 2px rgba(74,40,28,.18)}
+.print img{display:block;height:min(var(--pmax,360px),calc(100cqh - 74px),var(--mh,360px));width:auto;max-width:360px;object-fit:contain;background:var(--blush)}
+.print figcaption{display:flex;align-items:center;gap:6px;max-width:100%;padding:7px 0 8px;font:700 11px/1.15 var(--t);letter-spacing:.05em;text-transform:uppercase;color:#3D4F3F}
+.chip{flex:none;background:var(--butter);color:var(--butter-ink);padding:2px 5px;font:800 11px/1.1 var(--t);letter-spacing:.06em}
+.print-s{--pmax:170px}
+.print-s figcaption{font-size:10px}
+/* The cake from above: area grows with the weight, one slice line per guest (150 g). A drawing, labelled as one. */
+.tv{flex:none;display:grid;justify-items:center;width:min(58cqh,46cqw,360px)}
+.tv-plate{width:100%;aspect-ratio:1;border-radius:50%;background:#FFFFFF;display:grid;place-items:center;box-shadow:0 18px 30px -16px rgba(74,40,28,.5),inset 0 0 0 1px rgba(74,40,28,.08)}
+.tv-cake{width:calc(var(--k,.5) * 94%);aspect-ratio:1;border-radius:50%;border:calc(3px + var(--k) * 7px) solid var(--edge,#3E2418);
+  background:repeating-conic-gradient(from -90deg,rgba(20,53,42,.5) 0 1.1deg,var(--top,#F1E3CC) 1.1deg calc(360deg / var(--n,16)));
+  display:grid;place-items:center;container-type:inline-size;overflow:hidden}
+.tv-cake.plain{background:var(--top,#F1E3CC)}
+.tv-txt{max-width:74%;max-height:62%;overflow:hidden;text-align:center;font:800 15cqi/1 var(--d);letter-spacing:.01em;color:var(--edge,#3E2418);overflow-wrap:anywhere;text-wrap:balance}
+.tv-cap{margin-top:10px;font:600 12.5px/1.2 var(--t);letter-spacing:.03em;color:#3D4F3F;text-align:center}
+@media (prefers-reduced-motion:no-preference){ .tv-cake{transition:width .55s var(--ease)} }
+
+/* The ticket: the order so far, the current question underlined. */
+.ticket{flex:none;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);border-top:1px solid rgba(20,53,42,.2);background:var(--blush)}
+.app[data-route="cover"] .ticket,.app[data-route="summary"] .ticket{display:none}
+.tk{min-width:0;padding:6px 8px 7px;border-top:3px solid transparent;margin-top:-1px}
+.tk + .tk{border-left:1px solid rgba(20,53,42,.14)}
+.tk.now{border-top-color:var(--butter-ink)}
+.tk-k{font:700 10px/1.2 var(--t);letter-spacing:.07em;text-transform:uppercase;color:#3D4F3F}
+.tk-v{font:700 13.5px/1.3 var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-v.empty{font-weight:500;color:#5E5450}
+
+.pane{padding:22px var(--gut) calc(112px + env(safe-area-inset-bottom,0px))}
+.app[data-route="cover"] .pane{padding-bottom:28px}
+.app[data-route="summary"] .pane{padding-bottom:36px}
+/* Summary on a phone: the order is the content now; the photo steps back so the warning and total are in view. */
+.app[data-route="summary"] .panel{height:min(24dvh,200px)}
+.screen{max-width:640px;margin:0 auto}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--ground);border-top:1px solid var(--line);padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:56px 1fr;gap:8px;align-items:stretch}
+.app[data-route="cover"] .nav{display:none}
+/* Cover: the photo gives way on short screens (a phone with the browser bars open) so headline + button stay in view. */
+.app[data-route="cover"] .panel{height:max(120px,min(43dvh,390px,calc(100dvh - 430px)))}
+
+/* Phone: a focused control must not hide under the sticky photo or the bottom bar. */
+.opt,.item,.more,.edit,textarea,input[type="date"]{scroll-margin:calc(var(--stage-h) + 14px) 0 112px}
+noscript p{padding:24px var(--gut);font-weight:600}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:6px 22px;border:0;font:800 23px/1 var(--d);letter-spacing:.045em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.btn-pri{background:var(--butter);color:var(--butter-ink)}
+.btn-sec{background:none;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+.btn:disabled{background:none;color:#8FAA96;box-shadow:inset 0 0 0 2px var(--line);cursor:not-allowed}
+.back{border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;min-height:56px}
+
+/* ---------- cover ---------- */
+.cover h1{font:800 clamp(46px,13.6vw,62px)/.94 var(--d);letter-spacing:.004em;text-wrap:balance}
+.cover .lead{margin-top:14px;color:var(--ink-2);max-width:34ch;font-size:18px}
+.cover .btn-pri{margin-top:22px;min-height:64px;padding-inline:30px;font-size:27px}
+.alt{display:block;width:max-content;max-width:100%;margin-top:14px;padding:12px 0;font-weight:600;color:var(--ink);text-decoration:underline;text-decoration-color:var(--butter);text-decoration-thickness:2px;text-underline-offset:5px}
+
+/* ---------- step head ---------- */
+.prog-row{display:flex;align-items:center;gap:14px}
+.prog-l{font:700 14px/1 var(--t);letter-spacing:.04em;color:var(--butter);white-space:nowrap;font-variant-numeric:tabular-nums}
+.prog{display:flex;gap:5px;flex:1;max-width:260px}
+.prog li{flex:1;height:5px;background:var(--line)}
+.prog li.on{background:var(--butter)}
+.step h2{margin-top:16px;font:800 clamp(38px,10.6vw,46px)/.98 var(--d);letter-spacing:.004em;text-wrap:balance}
+.step h2:focus,.cover h1:focus{outline:none}
+.sub{margin-top:10px;color:var(--ink-2);max-width:46ch}
+.sub,.lead,.note,.warn span,.send p{text-wrap:pretty}
+
+/* ---------- answers ---------- */
+.opts{display:grid;gap:8px;margin-top:20px}
+.opt{position:relative;width:100%;border:0;background:var(--card);color:var(--ink);text-align:left;padding:14px 14px 14px 14px;min-height:64px}
+.opt[aria-pressed="true"]{background:var(--butter);color:var(--butter-ink)}
+.opt[aria-pressed="true"] .opt-hint,.opt[aria-pressed="true"] .opt-price span{color:#2F4A34}
+
+.opt-f{display:grid;grid-template-columns:26px minmax(0,1fr) auto;column-gap:13px;row-gap:3px;align-items:start}
+.sw{grid-row:1/3;display:flex;flex-direction:column;width:26px;height:46px;box-shadow:0 0 0 2px rgba(246,239,229,.16)}
+.sw i{display:block;min-height:3px}
+.opt[aria-pressed="true"] .sw{box-shadow:0 0 0 2px rgba(20,53,42,.28)}
+.opt-name{font:700 19px/1.2 var(--t)}
+.opt-price{font:700 18px/1.2 var(--t);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+.opt-price span{font-weight:500;font-size:14px;color:var(--ink-2)}
+.opt-hint{grid-column:2/4;font-size:14.5px;line-height:1.35;color:var(--ink-2)}
+
+.opts-w{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opt-w{display:flex;flex-direction:column;gap:2px;padding:14px 12px 13px;min-height:104px}
+.opt-w .kg{font:800 40px/1 var(--d);letter-spacing:.01em;font-variant-numeric:lining-nums}
+.opt-w .kg small{font-size:22px;font-weight:700}
+.opt-w .gu{font-size:14.5px;color:var(--ink-2);white-space:nowrap}
+.opt-w .pr{margin-top:auto;padding-top:8px;font:700 17px/1.1 var(--t);font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+.opt[aria-pressed="true"] .gu{color:#2F4A34}
+
+.more{margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:none;box-shadow:inset 0 0 0 2px var(--line)}
+.more p{font-weight:600}
+.more small{display:block;font-size:14.5px;font-weight:400;color:var(--ink-2)}
+.stepper{display:flex;align-items:center;gap:2px}
+.stepper button{width:46px;height:46px;border:0;background:var(--card);display:grid;place-items:center}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:74px;text-align:center;font:800 26px/1 var(--d);font-variant-numeric:tabular-nums lining-nums}
+.note{margin-top:14px;font-size:15px;color:var(--ink-2)}
+
+.opt-c{display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:13px;align-items:start}
+.box{width:24px;height:24px;margin-top:1px;box-shadow:inset 0 0 0 2px var(--ink-2);display:grid;place-items:center;color:transparent}
+.opt[aria-pressed="true"] .box{background:var(--butter-ink);box-shadow:none;color:var(--butter)}
+.opt-c .opt-hint{grid-column:2}
+
+.field{margin-top:22px}
+.field label{display:block;font-weight:700}
+.field .help{display:block;font-size:14.5px;font-weight:400;color:var(--ink-2)}
+textarea,input[type="date"]{width:100%;margin-top:8px;border:2px solid var(--line);border-radius:0;background:var(--ground-deep);color:var(--ink);padding:13px 14px;font:400 17px/1.4 var(--t);caret-color:var(--butter)}
+textarea{min-height:92px;resize:vertical}
+textarea::placeholder{color:#9DB5A2}
+input[type="date"]{min-height:60px;font:700 20px/1.2 var(--t);font-variant-numeric:tabular-nums}
+textarea:focus,input[type="date"]:focus{outline:none;border-color:var(--butter)}
+.baseline{margin-top:20px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:14px;border-top:1px solid var(--line)}
+.baseline b{font:800 30px/1 var(--d);font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+
+.warn{scroll-margin:16px 0 112px;margin-top:12px;display:grid;grid-template-columns:24px 1fr;gap:10px;padding:13px 14px;background:var(--butter);color:var(--butter-ink);font-weight:600}
+
+/* ---------- everyday ---------- */
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;align-items:center;background:var(--card);padding:12px 12px 12px 14px;min-height:72px}
+.item.has{background:var(--card-hi)}
+.item.has .stepper output{color:var(--butter)}
+.item .stepper button{background:var(--ground)}
+.item .stepper output{min-width:40px}
+
+/* ---------- summary ---------- */
+.total{margin-top:14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.total b{font:800 clamp(64px,19vw,88px)/.9 var(--d);color:var(--butter);font-variant-numeric:lining-nums;white-space:nowrap}
+.total span{font-weight:700;font-size:18px}
+.rows{margin-top:20px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px 12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.row dt{color:var(--ink-2);font-size:15px}
+.row dd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;min-width:0}
+.val{font-weight:600;overflow-wrap:anywhere;min-width:0}
+.val small{display:block;font-weight:400;font-size:14.5px;color:var(--ink-2)}
+.edit{border:0;background:none;padding:10px 0 10px 8px;margin:-10px 0;min-height:44px;font-weight:600;font-size:15px;color:var(--butter);text-decoration:underline;text-underline-offset:4px}
+.edit{flex:none}
+.copy{display:block;margin:6px 0 0;padding-left:0}
+.how{margin-top:26px}
+.how h3,.send h3{font:800 28px/1 var(--d);letter-spacing:.01em}
+.how ol{margin-top:12px;display:grid;gap:10px;counter-reset:how}
+.how li{display:grid;grid-template-columns:26px 1fr;gap:10px;counter-increment:how}
+.how li::before{content:counter(how);font:800 24px/1.15 var(--d);color:var(--butter)}
+.send{margin-top:26px}
+.send p{margin-top:8px;color:var(--ink-2);font-size:15.5px}
+.ph{margin-top:22px;padding:12px 14px;box-shadow:inset 0 0 0 2px var(--line);color:var(--ink-2);font-size:15px}
+.nav-msg{grid-template-columns:56px repeat(2,minmax(0,1fr))}
+.nav-msg .back{grid-row:1/3}
+.nav-msg .btn{min-height:52px;padding-inline:8px;font-size:21px}
+.status{grid-column:1/-1;min-height:0;font-size:14.5px;font-weight:600;color:var(--butter);text-align:center}
+.status:empty{display:none}
+
+/* ---------- stage objects (paper things in the photo studio) ---------- */
+.slab-wrap{width:min(74%,360px);display:grid;justify-items:center}
+.slab-name{margin-bottom:12px;font:800 26px/1 var(--d);text-align:center;text-wrap:balance}
+.slab{width:100%;height:46cqh;display:flex;flex-direction:column;box-shadow:0 22px 34px -16px rgba(74,40,28,.5)}
+.band{display:flex;align-items:center;justify-content:center;min-height:28px;padding:2px 10px;font:700 15px/1.1 var(--t);text-align:center}
+.plate{width:118%;height:12px;background:#fff;box-shadow:0 10px 18px -8px rgba(74,40,28,.45)}
+.st-cap{margin-top:14px;font:600 13.5px/1.2 var(--t);letter-spacing:.03em;color:#3D4F3F}
+.tag{width:min(78%,400px);background:var(--paper);padding:22px 22px 20px;box-shadow:0 22px 40px -18px rgba(74,40,28,.5)}
+.tag-name{font:800 clamp(34px,9vw,44px)/.98 var(--d);text-wrap:balance}
+.tag-line{margin-top:8px;font-size:16px}
+.tag-soon{margin-top:16px;padding-top:10px;border-top:2px solid var(--butter-ink);font:700 13.5px/1.2 var(--t);letter-spacing:.06em;text-transform:uppercase}
+.leaf{width:min(52%,230px);background:var(--paper);text-align:center;box-shadow:0 22px 40px -18px rgba(74,40,28,.5)}
+.leaf-top{background:var(--butter-ink);color:var(--butter);padding:min(8px,2.4cqh) 8px;font:700 15px/1.1 var(--t);letter-spacing:.06em;text-transform:uppercase}
+/* the leaf scales with the stage height: on a 640 px phone the stage is about 190 px tall */
+.leaf-day{font:800 min(120px,26vw,30cqh)/.9 var(--d);padding-top:min(12px,3cqh);font-variant-numeric:lining-nums}
+.leaf-wd{font:700 18px/1.2 var(--t);padding-top:2px}
+.leaf-in{margin:min(10px,2.5cqh) 14px 0;padding:min(9px,2.4cqh) 0 min(12px,3cqh);border-top:2px solid var(--butter-ink);font:600 14.5px/1.2 var(--t)}
+
+/* ---------- footer (ROUND2 Job 2 + Round 2b): a full-width band at the very bottom of the page, under BOTH columns,
+   on the cover and on the summary only. Phones: stacked; tablets: two columns; desktop: four. ---------- */
+.foot{background:var(--ground-deep);border-top:1px solid var(--line);padding:34px var(--gut) 30px;font-size:15px;line-height:1.4;color:var(--ink-2)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:26px}
+.foot h3{font:800 25px/1 var(--d);letter-spacing:.01em;color:var(--ink);margin-bottom:8px}
+.foot p + p{margin-top:6px}
+.foot a{display:inline-block;min-height:44px;padding:11px 5px;margin:0 -5px;color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--butter);text-decoration-thickness:2px;text-underline-offset:4px}
+.sep{margin-inline:0 6px}
+.foot-docs a{display:block;margin:0;padding:11px 0;font-weight:500}
+.dr{display:inline-block;margin-right:6px;padding:1px 5px 2px;background:var(--ground);color:var(--butter);font:700 10.5px/1.3 var(--t);letter-spacing:.07em;vertical-align:1px;box-shadow:inset 0 0 0 1px rgba(242,221,130,.45)}
+.foot-fine{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:grid;gap:8px;font-size:14px}
+.foot-copy{margin-top:16px;padding-bottom:4px;font-size:13.5px;color:#8FAA96}
+/* phone summary: the fixed send bar sits over the page bottom - the last footer line must stay readable above it */
+@media (max-width:959px){ html[data-route="summary"] .foot{padding-bottom:calc(176px + env(safe-area-inset-bottom,0px))} }
+@media (min-width:600px) and (max-width:959px){ .foot-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px} }
+@media (hover:hover) and (pointer:fine){ .foot a:hover{color:var(--butter)} }
+
+/* the stand-in note under the words (tablet / desktop); phones carry it in the label line instead (.kx) */
+.say-x{margin-top:10px;font:700 11px/1.3 var(--t);letter-spacing:.05em;text-transform:uppercase;color:#3D4F3F}
+.say-x .chip{margin-right:4px}
+.slab-legend,.kx,.dchip{display:none}
+.dchip{margin-left:auto;white-space:nowrap;font:700 12px/1.2 var(--t);letter-spacing:.04em;text-transform:uppercase;color:var(--butter)}
+.dchip .chip{margin-right:4px}
+
+/* Weight scene on a phone: drawing + words side by side; the whole-cake print only where there is room. */
+/* the growing photo: a box of the cap size, the cake stands on its bottom line and grows upwards and outwards */
+.wt{--L:min(var(--cap),calc(100cqh - 28px));flex:none;height:var(--L);width:calc(var(--L) * var(--ar));display:flex;align-items:flex-end;justify-content:center}
+.wt-img{display:block;height:calc(var(--L) * var(--g,.6));width:auto;max-width:none}
+@media (prefers-reduced-motion:no-preference){ .wt-img{transition:height .55s var(--ease)} }
+.w-side{display:block;min-width:0}
+
+/* ---------- PHONES (portrait, < 600 px): the question gets the screen (owner 02.10: "half the screen is the cake").
+   On every step: no separate draft strip (the DRAFT mark rides in the step row), a 44 px brand row, the picture panel
+   + ticket at most 27% of the screen, scenes laid out side by side. The cover keeps its big first screen. ---------- */
+@media (max-width:599px){
+  :root{--stage-h:min(27dvh,260px)}
+  html:not([data-route="cover"]) .draft{display:none}
+  html:not([data-route="cover"]) .top{padding:0 6px 0 var(--gut)}
+  html:not([data-route="cover"]) .brand{font-size:21px;padding:12px 0}
+  .app:not([data-route="cover"]) .pane{padding-top:14px}
+  .step h2{margin-top:12px}
+  .dchip{display:inline-block}
+  .prog{max-width:none}
+  .tk{padding:4px 8px 5px}
+  .scene{padding:6px var(--gut);gap:14px}
+  .say-v{font-size:26px}
+  .say .say-x{display:none}
+  /* summary: the two-row send bar needs its room; the photo steps back further */
+  .app[data-route="summary"] .panel{height:min(20dvh,180px)}
+  .leaf-day{font-size:min(120px,26vw,27cqh)}
+  .kx{display:inline-block;margin-left:4px;white-space:nowrap}
+  .kx .chip{margin-right:3px}
+  .print{padding:6px}
+  .print figcaption{display:none}
+  .print img{height:min(var(--pmax,360px),calc(100cqh - 24px),var(--mh,360px))}
+  .wt{--L:min(var(--cap),calc(100cqh - 12px))}
+  .tag{padding:14px 16px 12px}
+  .tag-name{font-size:30px}
+  .tag-line{margin-top:4px}
+  .tag-soon{margin-top:8px;padding-top:6px}
+  /* layer scheme: colour bands left, the names as a legend right (15 px text cannot sit in 25 px bands) */
+  .slab-wrap{width:100%;padding:0 var(--gut);display:grid;grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto 1fr auto;column-gap:14px;align-items:start}
+  .slab-name{grid-column:2;grid-row:1;text-align:left;font-size:22px;margin:0 0 4px}
+  .slab{grid-column:1;grid-row:1/3;height:calc(100cqh - 30px);box-shadow:0 12px 20px -12px rgba(74,40,28,.5)}
+  .band{min-height:0}
+  .band span{display:none}
+  .plate{grid-column:1;grid-row:3;width:112%;margin-left:-6%;height:8px}
+  .slab-legend{display:block;grid-column:2;grid-row:2;font:600 15px/1.25 var(--t)}
+  .slab-legend li{display:flex;align-items:center;gap:7px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slab-legend i{flex:none;width:11px;height:11px;box-shadow:0 0 0 1px rgba(20,53,42,.25)}
+  .st-cap{grid-column:2;grid-row:3;margin-top:2px;font-size:12.5px}
+}
+
+/* ---------- hover: only where a real pointer hovers (on touch :hover sticks to whatever lands under the last tap) ---------- */
+@media (hover:hover) and (pointer:fine){
+  .lang button:hover{color:var(--ink)}
+  .btn-pri:not(:disabled):hover{background:#F8E79B}
+  .btn-sec:hover{box-shadow:inset 0 0 0 2px var(--ink-2)}
+  .back:hover,.opt:not([aria-pressed="true"]):hover,.stepper button:not(:disabled):hover{background:var(--card-hi)}
+  .item .stepper button:not(:disabled):hover{background:var(--line)}
+  .alt:hover{color:var(--butter)}
+  .edit:hover{color:var(--ink)}
+}
+
+/* ---------- motion: one authored moment - the stage "develops" a new picture on every answer ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .st-layer.in{animation:st-wipe .6s var(--ease) backwards}
+  .st-layer.in .st-img{animation:st-settle 1s var(--ease) backwards}
+  @keyframes st-wipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes st-settle{from{transform:scale(.97)}to{transform:scale(1)}}
+  .screen.fwd{animation:scr-in .26s var(--ease) backwards}
+  .screen.bwd{animation:scr-back .26s var(--ease) backwards}
+  @keyframes scr-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes scr-back{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+  .opt,.btn,.back,.stepper button{transition:background-color .16s,color .16s,transform .12s,box-shadow .16s}
+  .opt:active,.btn:active:not(:disabled),.back:active,.stepper button:active:not(:disabled){transform:scale(.98)}
+  .prog li{transition:background-color .3s}
+}
+
+/* ---------- tablet in the phone layout: a taller stage, a wide flat one crops the cut to a keyhole ---------- */
+@media (min-width:600px) and (max-width:959px){
+  :root{--stage-h:min(42dvh,460px);--gut:24px}
+  .app[data-route="cover"] .panel{height:max(160px,min(48dvh,520px,calc(100dvh - 430px)))}
+}
+
+/* ---------- phone on its side (short and wide): picture right, question left, bar under the question ---------- */
+@media (orientation:landscape) and (max-height:520px) and (max-width:959px){
+  .app{display:grid;grid-template-columns:minmax(0,1fr) 38%;align-items:start}
+  .top{grid-column:1;grid-row:1}
+  .pane{grid-column:1;grid-row:2}
+  .panel,.app[data-sticky="1"] .panel,.app[data-route="cover"] .panel,.app[data-route="summary"] .panel{grid-column:2;grid-row:1/4;position:sticky;top:0;height:100dvh}
+  .nav{right:38%}
+  .opt,.item,.more,.edit,textarea,input[type="date"],.warn{scroll-margin:12px 0 112px}
+  /* the panel is narrow and tall here: scenes stack, the whole-cake print gives way to the drawing */
+  .scene{flex-direction:column;gap:8px;padding:10px 14px}
+  .scene .say{text-align:center;max-width:100%}
+  .say-v{font-size:28px}
+  .wt{--L:min(var(--cap),calc(100cqh - 156px))}
+  .tv{width:min(42cqh,70cqw,360px)}
+  .print img{height:min(var(--pmax,360px),calc(56cqh - 40px),var(--mh,360px))}
+}
+
+/* ---------- desktop: question left, the studio right, nothing scrolls ---------- */
+@media (min-width:960px){
+  :root{--gut:56px;--stage-h:calc(100dvh - 31px)}
+  /* one screen per step; on the cover and the summary the page scrolls on to the footer band */
+  html:not([data-foot="1"]),html:not([data-foot="1"]) body{height:100%;overflow:hidden}
+  body{display:flex;flex-direction:column}
+  .draft{flex:none;font-size:13px;height:31px}   /* exact: the app below is calc(100dvh - 31px) */
+  .app{flex:none;height:calc(100dvh - 31px);min-height:0;display:grid;grid-template-columns:52fr 48fr;grid-template-rows:auto minmax(0,1fr) auto}
+  .top{grid-column:1;grid-row:1;padding-top:14px}
+  .panel,.app[data-sticky="1"] .panel,.app[data-route="cover"] .panel,.app[data-route="summary"] .panel{grid-column:2;grid-row:1/4;height:auto;min-height:0;position:relative;top:auto}
+  .st-img{object-position:var(--pos-d,50% 100%)}
+  .pane{grid-column:1;grid-row:2;overflow-y:auto;padding:10px var(--gut) 24px;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .app[data-route="cover"] .pane,.app[data-route="summary"] .pane{padding-bottom:24px}
+  .screen{margin:0;width:100%;max-width:640px;padding-block:8px}
+  .screen.cover{margin:auto 0;padding-bottom:6dvh}
+  .nav{grid-column:1;grid-row:3;position:static;border-top:1px solid var(--line);padding:14px var(--gut) 18px;grid-template-columns:60px auto;justify-content:start}
+  #next{min-width:220px}
+  .nav-msg{grid-template-columns:60px repeat(2,minmax(0,1fr));justify-content:stretch}
+  .opt,.item,.more,.edit,textarea,input[type="date"]{scroll-margin:12px 0}
+  .cover h1{font-size:clamp(64px,6.2vw,96px)}
+  .cover .lead{font-size:20px;max-width:36ch;margin-top:20px}
+  .cover .btn-pri{margin-top:30px;min-height:70px;font-size:30px;padding-inline:38px}
+  .alt{margin-top:18px}
+  .step h2{font-size:clamp(46px,4.3vw,66px);margin-top:18px}
+  .sub{font-size:18px}
+  .opt-w{min-height:124px;padding:16px 16px 15px}
+  .opt-w .kg{font-size:52px}
+  .opt-w .kg small{font-size:26px}
+  .total b{font-size:clamp(72px,6.4vw,104px)}
+  .slab-wrap{width:min(56%,400px)}
+  .slab{height:50cqh}
+  .slab-name{font-size:44px;margin-bottom:22px}
+  .band{font-size:18px;min-height:40px}
+  .plate{height:16px}
+  .st-cap{font-size:15px}
+  .tag{padding:34px 34px 30px;width:min(66%,460px)}
+  .tag-name{font-size:64px}
+  .tag-line{font-size:19px}
+  .leaf{width:300px}
+  .leaf-top{font-size:18px;padding:12px}
+  .leaf-day{font-size:210px}
+  .leaf-wd{font-size:24px}
+  .leaf-in{font-size:17px;margin-inline:22px;padding:12px 0 16px}
+  .foot{padding:56px var(--gut) 40px}
+  .foot-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:40px}
+  .scene{gap:40px;padding:40px}
+  .scene-w{gap:44px}
+  .scene-w .say-x{font-size:12px;margin-top:16px}
+  .say{max-width:250px}
+  .say-k{font-size:13px}
+  .say-v{font-size:62px;margin-top:6px}
+  .say-s{font-size:18px;margin-top:10px}
+  .print{padding:12px 12px 0}
+  .print figcaption{font-size:12px;padding:10px 0 11px}
+  .print-s figcaption{font-size:10.5px}
+  .tv-cap{font-size:14px;margin-top:14px}
+  .tk{padding:14px 20px 18px}
+  .tk-k{font-size:12px}
+  .tk-v{font-size:19px;margin-top:4px}
+}
+/* Two columns of fillings and one row of messengers only where the left half is wide enough for the words. */
+@media (min-width:1360px){
+  .opts-f{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:16px}
+  .opts-f .opt{padding-block:11px}
+  .nav-msg{grid-template-columns:60px repeat(4,minmax(0,1fr))}
+  .nav-msg .back{grid-row:auto}
+}
+@media (min-width:960px) and (max-height:780px){
+  .step h2{font-size:46px;margin-top:12px}
+  .opt{padding-block:11px}
+}
+</style>
+</head>
+<body>
+<p class="draft" id="draft"></p>
+<noscript><p>Щоб зібрати торт, увімкніть JavaScript у браузері. / Чтобы собрать торт, включите JavaScript в браузере.</p></noscript>
+<div class="app" id="app" data-route="cover">
+  <header class="top">
+    <a class="brand" href="#" id="brand">Home Sweet Cake</a>
+    <div class="lang" role="group" id="lang">
+      <button type="button" data-lang="uk" aria-pressed="true">UA</button>
+      <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+    </div>
+  </header>
+  <aside class="panel" id="panel"><div class="stage" id="stage"></div><div class="ticket" id="ticket" aria-hidden="true"></div></aside>
+  <main class="pane" id="pane"></main>
+  <nav class="nav" id="nav"></nav>
+</div>
+<div id="footwrap"></div>
+
+<script src="img/photos.js"></script>
+<script>
+(function () {
+"use strict";
+
+/* ===== CONFIG (placeholders) ===== */
+var CONFIG = { PHONE: "380000000000", USERNAME: "homesweetcake_placeholder", IGHANDLE: "homesweetcake_placeholder",
+  FBHANDLE: "homesweetcake_placeholder", TTHANDLE: "homesweetcake_placeholder" };
+var RULES = { minKg: 1.5, stepKg: 0.5, maxKg: 10, gramsPerGuest: 150, leadDays: 3 };
+var KG_CARDS = [1.5, 2, 2.5, 3, 3.5, 4];
+
+/* ===== DATA (placeholder prices; layers as printed in COURSE-FILLINGS.md) =====
+   k: s = sponge (thicker band), c = cream or mousse, j = jelly, sauce, confit (thin), x = crunch.
+   Band colours are for the layer scheme only. pm / pd = object-position on phone / desktop (covering photos). */
+var FILLINGS = [
+  { id: "snickers", price: 900, photo: "snickers-cut", pm: "50% 55%", pd: "50% 100%", uk: "Снікерс", ru: "Сникерс", L: [
+    { k: "s", c: "#3E2418", uk: "шоколадний бісквіт", ru: "шоколадный бисквит" },
+    { k: "c", c: "#C7863F", uk: "карамельний крем", ru: "карамельный крем" },
+    { k: "j", c: "#A85D1F", uk: "солона карамель", ru: "солёная карамель" },
+    { k: "x", c: "#D6A866", uk: "арахісова нуга", ru: "арахисовая нуга" }] },
+  { id: "berry", price: 850, photo: "berry-cut", pm: "50% 56%", pd: "50% 100%", uk: "Ягідний вибух", ru: "Ягодный взрыв", L: [
+    { k: "s", c: "#E9C98B", uk: "ванільно-ягідний бісквіт", ru: "ванильно-ягодный бисквит" },
+    { k: "c", c: "#B5294E", uk: "ягідний мус", ru: "ягодный мусс" },
+    { k: "c", c: "#F6EEDF", uk: "мус на білому шоколаді", ru: "мусс на белом шоколаде" }] },
+  { id: "velvet", price: 950, uk: "Червоний оксамит", ru: "Красный бархат", L: [
+    { k: "s", c: "#9E1B32", uk: "бісквіт червоний оксамит", ru: "бисквит красный бархат" },
+    { k: "j", c: "#D63A5A", uk: "полунично-малинове конфі", ru: "клубнично-малиновое конфи" },
+    { k: "c", c: "#5B3324", uk: "шоколадний мус", ru: "шоколадный мусс" },
+    { k: "c", c: "#F7F0E6", uk: "вершковий крем", ru: "сливочный крем" }] },
+  { id: "medivnyk", price: 850, uk: "Шоколадний медівник", ru: "Шоколадный медовик", L: [
+    { k: "s", c: "#5A3626", uk: "медові шоколадні коржі", ru: "медовые шоколадные коржи" },
+    { k: "c", c: "#EAD7BC", uk: "вершково-фундучний крем", ru: "сливочно-фундучный крем" },
+    { k: "j", c: "#8E1631", uk: "вишневий соус", ru: "вишнёвый соус" }] },
+  { id: "pistachio", price: 950, uk: "Фісташка-малина-полуниця", ru: "Фисташка-малина-клубника", L: [
+    { k: "s", c: "#9FB35A", uk: "фісташковий бісквіт", ru: "фисташковый бисквит" },
+    { k: "j", c: "#D63A5A", uk: "полунично-малинове конфі", ru: "клубнично-малиновое конфи" },
+    { k: "c", c: "#C5D38E", uk: "фісташковий мус", ru: "фисташковый мусс" }] },
+  { id: "apple", price: 820, uk: "Яблуко-карамель-кориця", ru: "Яблоко-карамель-корица", L: [
+    { k: "s", c: "#D9A96A", uk: "ванільний бісквіт з корицею", ru: "ванильный бисквит с корицей" },
+    { k: "c", c: "#C98A3E", uk: "карамельний мус", ru: "карамельный мусс" },
+    { k: "x", c: "#9A6A35", uk: "хрусткий кранч", ru: "хрустящий кранч" },
+    { k: "j", c: "#E8B54F", uk: "карамелізовані яблука", ru: "карамелизированные яблоки" }] },
+  { id: "poppy", price: 900, uk: "Мак-лимон-малина", ru: "Мак-лимон-малина", L: [
+    { k: "s", c: "#6A6670", uk: "маковий бісквіт", ru: "маковый бисквит" },
+    { k: "c", c: "#F7F0E6", uk: "вершковий крем", ru: "сливочный крем" },
+    { k: "c", c: "#EFE07A", uk: "лимонний мус з базиліком", ru: "лимонный мусс с базиликом" },
+    { k: "c", c: "#E2577A", uk: "малиновий мус", ru: "малиновый мусс" }] },
+  { id: "carrot", price: 880, uk: "Морквяна пристрасть", ru: "Морковная страсть", L: [
+    { k: "s", c: "#C9772F", uk: "морквяний бісквіт", ru: "морковный бисквит" },
+    { k: "c", c: "#F3A64A", uk: "апельсиновий мус", ru: "апельсиновый мусс" },
+    { k: "j", c: "#F6C533", uk: "желе манго-маракуя", ru: "желе манго-маракуйя" },
+    { k: "c", c: "#F7F0E6", uk: "вершковий крем", ru: "сливочный крем" }] }
+];
+var DECOR = [
+  { id: "flowers", photo: "roses",
+    uk: "Вафельні квіти", ru: "Вафельные цветы", hk: "ручна робота, рахуємо поштучно", hr: "ручная работа, считаем поштучно" },
+  { id: "text", uk: "Напис", ru: "Надпись", hk: "текст напишіть у побажаннях", hr: "текст напишите в пожеланиях" },
+  { id: "print", uk: "Фото-друк", ru: "Фотопечать", hk: "картинку надішлете в чаті", hr: "картинку пришлёте в чате" },
+  { id: "berries", uk: "Ягоди або фрукти", ru: "Ягоды или фрукты", hk: "які саме - напишіть у побажаннях", hr: "какие именно - напишите в пожеланиях" },
+  { id: "chat", uk: "Обговоримо в чаті", ru: "Обсудим в чате", hk: "покажете приклад - порахуємо", hr: "покажете пример - посчитаем" }
+];
+var DAILY = [
+  { id: "cheesecake", price: 110, photo: "cheesecake",
+    uk: "Чизкейк карамель-арахіс", ru: "Чизкейк карамель-арахис", uu: "шматочок", ur: "кусочек" },
+  { id: "roll", price: 480, uk: "Меренговий рулет", ru: "Меренговый рулет", uu: "рулет ≈ 600 г", ur: "рулет ≈ 600 г" },
+  { id: "muffins", price: 45, uk: "ПП-мафіни з кабачком", ru: "ПП-маффины с кабачком", uu: "1 шт", ur: "1 шт" },
+  { id: "zapikanka", price: 95, uk: "Сирна запіканка", ru: "Творожная запеканка", uu: "порція 250 г", ur: "порция 250 г" }
+];
+/* Photos are named as in img/photos.js (written by tools/build_img.py: natural size + standin flag). */
+var PHOTOS = window.HSC_PHOTOS || {};
+var WHOLE = { photo: "dani-outside" };
+var HERO = { photo: "berry-cut", pm: "50% 56%", pd: "50% 100%" };
+
+/* ===== ONE DICTIONARY ===== */
+var I18N = {
+  uk: {
+    title: "Home Sweet Cake - зберіть свій торт за 2 хвилини",
+    draft: "DRAFT: ціни-заглушки. Терміни й передоплата теж.",
+    langGroup: "Мова сайту",
+    stageLabel: "Фото торта",
+    cover_h: "Зберіть свій торт за 2 хвилини",
+    cover_p: "Домашні торти на замовлення в Кам'янці-Подільському. Оберіть начинку й вагу - одразу побачите ціну, без «ціна в дірект».",
+    cover_cta: "Зібрати торт",
+    cover_alt: "Повсякденні: чизкейк, рулет, запіканка",
+    step: "Крок {n} з {m}",
+    back: "Назад", next: "Далі", toSummary: "До підсумку", done: "Готово",
+    uah: "грн", perKg: "грн/кг", kg: "кг", pcs: "шт",
+    guests: ["гість", "гості", "гостей"],
+    days: ["день", "дні", "днів"],
+    f_h: "Яка начинка всередині?",
+    f_p: "Ціна залежить від начинки. Біля кожної - усі шари, щоб ви знали, що всередині.",
+    f_proof: "Тут будуть справжні відгуки про смак. Додамо, коли Аня їх підтвердить.",
+    alt_cut: "{name} у розрізі",
+    scheme: "Схема шарів, не фото",
+    scheme_aria: "Схема шарів начинки {name}: {layers}",
+    w_h: "Якої ваги торт?",
+    w_p: "Рахуємо 150 г на гостя. Зважуємо готовий торт - платите за фактичну вагу.",
+    w_more: "Потрібен більший?",
+    w_less: "Менше", w_plus: "Більше",
+    w_min: "Найменший торт - 1,5 кг.",
+    alt_whole: "Торт з написом Happy Birthday",
+    d_h: "Який декор хочете?",
+    d_p: "Можна обрати кілька. Декор рахуємо окремо: ціну Аня назве в чаті.",
+    d_wish: "Побажання до декору",
+    d_wish_help: "Напис, кольори, для кого торт.",
+    d_wish_ph: "Наприклад: напис «З днем народження, Даню»",
+    d_base: "Торт без декору",
+    d_example: "Маєте картинку-приклад? Надішлете її в чаті разом із замовленням.",
+    alt_roses: "Торт з вафельними квітами в коробці",
+    soon: "Фото буде",
+    t_h: "На коли потрібен торт?",
+    t_p: "Замовляйте щонайменше за 3 дні до свята.",
+    t_label: "Дата, коли забираєте торт",
+    t_label_daily: "Дата, коли забираєте замовлення",
+    t_warn: "До цієї дати менше 3 днів. Замовлення можна надіслати - Аня відповість, чи встигне.",
+    t_how: "Як забрати торт - домовитесь у чаті.",
+    t_earliest: "найраніше без поспіху",
+    t_today: "сьогодні", t_tomorrow: "завтра", t_in: "через {n} {days}", t_past: "ця дата вже минула",
+    leaf_aria: "Дата: {date}",
+    s_h: "Ось ваш торт",
+    s_h_daily: "Ось ваше замовлення",
+    s_total: "торт без декору",
+    s_total_daily: "разом",
+    s_decor_note: "Декор розраховується індивідуально.",
+    r_filling: "Начинка", r_weight: "Вага", r_decor: "Декор", r_wish: "Побажання", r_date: "Дата", r_items: "Що берете",
+    r_edit: "Змінити",
+    r_nodecor: "не обрано - обговоримо в чаті",
+    how_h: "Що буде далі",
+    how: ["Надсилаєте це замовлення в месенджер.", "Аня підтверджує дату й називає ціну декору.", "Вносите передоплату - і дата ваша.", "Готовий торт зважуємо: платите за фактичну вагу й забираєте його."],
+    how_daily: ["Надсилаєте це замовлення в месенджер.", "Аня підтверджує дату й суму.", "Забираєте замовлення в домовлений день."],
+    send_h: "Куди надіслати замовлення?",
+    send_p: "WhatsApp відкриється з готовим текстом. Для Viber, Telegram та Instagram текст скопіюється - вставте його в чат.",
+    copy: "Скопіювати текст замовлення",
+    copied: "Скопійовано - вставте в чат",
+    copyFail: "Не вдалося скопіювати. Відкрийте WhatsApp - там текст уже готовий.",
+    about_ph: "Тут буде кілька слів про Аню та її кухню - її словами.",
+    e_h: "Що беремо на щодень?",
+    e_p: "Ціна за штуку. Додайте, скільки потрібно.",
+    e_total: "Разом",
+    e_minus: "Менше: {name}", e_plus: "Більше: {name}",
+    m_hello: "Добрий день! Хочу замовити торт.",
+    m_hello_daily: "Добрий день! Хочу замовити:",
+    m_est: "Орієнтовно: {sum} грн - торт без декору. Декор порахуйте, будь ласка, окремо.",
+    m_total: "Разом: {sum} грн",
+    standin: "фото-заглушка, справжнє буде",
+    standin_short: "фото-заглушка",
+    draft_short: "ціни-заглушки",
+    tv_cap: "Вид зверху. Схема, не фото",
+    tv_aria: "Схема торта зверху: {kg} кг, шматочків по 150 г: {n}",
+    slices: ["шматочок", "шматочки", "шматочків"],
+    tv_slices: "{n} {slices} по 150 г",
+    d_text_sample: "Ваш напис",
+    tv_text_aria: "Схема торта зверху з написом: {text}",
+    in_order: "у замовленні: {n} шт",
+    tk_empty: "не обрано",
+    tk_nodecor: "без декору",
+    ft_hours_h: "Графік",
+    ft_hours1: "Приймаю замовлення: пн-сб, 9:00-20:00",
+    ft_hours2: "Неділя - вихідний",
+    ft_pickup: "Забрати торт: за домовленістю, Кам'янець-Подільський",
+    ft_delivery: "Доставка по місту безкоштовна. За місто - за кілометраж.",
+    ft_contacts_h: "Контакти",
+    ft_social_h: "Соцмережі",
+    ft_docs_h: "Документи",
+    doc_privacy: "Політика конфіденційності",
+    doc_offer: "Публічна оферта",
+    doc_payment: "Оплата і доставка",
+    doc_returns: "Повернення та обмін",
+    ft_seller: "ФОП [прізвище, ім'я, по батькові]. РНОКПП [0000000000].",
+    ft_allergens: "Алергени: у тортах є глютен, яйця, молоко, горіхи. Напишіть, якщо у вас алергія."
+  },
+  ru: {
+    title: "Home Sweet Cake - соберите свой торт за 2 минуты",
+    draft: "DRAFT: цены-заглушки. Сроки и предоплата тоже.",
+    langGroup: "Язык сайта",
+    stageLabel: "Фото торта",
+    cover_h: "Соберите свой торт за 2 минуты",
+    cover_p: "Домашние торты на заказ в Каменце-Подольском. Выберите начинку и вес - сразу увидите цену, без «цена в директ».",
+    cover_cta: "Собрать торт",
+    cover_alt: "Повседневные: чизкейк, рулет, запеканка",
+    step: "Шаг {n} из {m}",
+    back: "Назад", next: "Дальше", toSummary: "К итогу", done: "Готово",
+    uah: "грн", perKg: "грн/кг", kg: "кг", pcs: "шт",
+    guests: ["гость", "гостя", "гостей"],
+    days: ["день", "дня", "дней"],
+    f_h: "Какая начинка внутри?",
+    f_p: "Цена зависит от начинки. Возле каждой - все слои, чтобы вы знали, что внутри.",
+    f_proof: "Здесь будут настоящие отзывы о вкусе. Добавим, когда Аня их подтвердит.",
+    alt_cut: "{name} в разрезе",
+    scheme: "Схема слоёв, не фото",
+    scheme_aria: "Схема слоёв начинки {name}: {layers}",
+    w_h: "Какой вес торта?",
+    w_p: "Считаем 150 г на гостя. Взвешиваем готовый торт - платите за фактический вес.",
+    w_more: "Нужен больше?",
+    w_less: "Меньше", w_plus: "Больше",
+    w_min: "Самый маленький торт - 1,5 кг.",
+    alt_whole: "Торт с надписью Happy Birthday",
+    d_h: "Какой декор хотите?",
+    d_p: "Можно выбрать несколько. Декор считаем отдельно: цену Аня назовёт в чате.",
+    d_wish: "Пожелания к декору",
+    d_wish_help: "Надпись, цвета, для кого торт.",
+    d_wish_ph: "Например: надпись «С днём рождения, Даня»",
+    d_base: "Торт без декора",
+    d_example: "Есть картинка-пример? Пришлёте её в чате вместе с заказом.",
+    alt_roses: "Торт с вафельными цветами в коробке",
+    soon: "Фото будет",
+    t_h: "На когда нужен торт?",
+    t_p: "Заказывайте минимум за 3 дня до праздника.",
+    t_label: "Дата, когда забираете торт",
+    t_label_daily: "Дата, когда забираете заказ",
+    t_warn: "До этой даты меньше 3 дней. Заказ можно отправить - Аня ответит, успеет ли.",
+    t_how: "Как забрать торт - договоритесь в чате.",
+    t_earliest: "самое раннее без спешки",
+    t_today: "сегодня", t_tomorrow: "завтра", t_in: "через {n} {days}", t_past: "эта дата уже прошла",
+    leaf_aria: "Дата: {date}",
+    s_h: "Вот ваш торт",
+    s_h_daily: "Вот ваш заказ",
+    s_total: "торт без декора",
+    s_total_daily: "всего",
+    s_decor_note: "Декор рассчитывается индивидуально.",
+    r_filling: "Начинка", r_weight: "Вес", r_decor: "Декор", r_wish: "Пожелания", r_date: "Дата", r_items: "Что берёте",
+    r_edit: "Изменить",
+    r_nodecor: "не выбран - обсудим в чате",
+    how_h: "Что будет дальше",
+    how: ["Отправляете этот заказ в мессенджер.", "Аня подтверждает дату и называет цену декора.", "Вносите предоплату - и дата ваша.", "Готовый торт взвешиваем: платите за фактический вес и забираете его."],
+    how_daily: ["Отправляете этот заказ в мессенджер.", "Аня подтверждает дату и сумму.", "Забираете заказ в оговорённый день."],
+    send_h: "Куда отправить заказ?",
+    send_p: "WhatsApp откроется с готовым текстом. Для Viber, Telegram и Instagram текст скопируется - вставьте его в чат.",
+    copy: "Скопировать текст заказа",
+    copied: "Скопировано - вставьте в чат",
+    copyFail: "Не получилось скопировать. Откройте WhatsApp - там текст уже готов.",
+    about_ph: "Здесь будет несколько слов об Ане и её кухне - её словами.",
+    e_h: "Что берём на каждый день?",
+    e_p: "Цена за штуку. Добавьте, сколько нужно.",
+    e_total: "Всего",
+    e_minus: "Меньше: {name}", e_plus: "Больше: {name}",
+    m_hello: "Добрый день! Хочу заказать торт.",
+    m_hello_daily: "Добрый день! Хочу заказать:",
+    m_est: "Ориентировочно: {sum} грн - торт без декора. Декор посчитайте, пожалуйста, отдельно.",
+    m_total: "Всего: {sum} грн",
+    standin: "фото-заглушка, настоящее будет",
+    standin_short: "фото-заглушка",
+    draft_short: "цены-заглушки",
+    tv_cap: "Вид сверху. Схема, не фото",
+    tv_aria: "Схема торта сверху: {kg} кг, кусочков по 150 г: {n}",
+    slices: ["кусочек", "кусочка", "кусочков"],
+    tv_slices: "{n} {slices} по 150 г",
+    d_text_sample: "Ваша надпись",
+    tv_text_aria: "Схема торта сверху с надписью: {text}",
+    in_order: "в заказе: {n} шт",
+    tk_empty: "не выбрано",
+    tk_nodecor: "без декора",
+    ft_hours_h: "График",
+    ft_hours1: "Принимаю заказы: пн-сб, 9:00-20:00",
+    ft_hours2: "Воскресенье - выходной",
+    ft_pickup: "Забрать торт: по договорённости, Каменец-Подольский",
+    ft_delivery: "Доставка по городу бесплатная. За город - по километражу.",
+    ft_contacts_h: "Контакты",
+    ft_social_h: "Соцсети",
+    ft_docs_h: "Документы",
+    doc_privacy: "Политика конфиденциальности",
+    doc_offer: "Публичная оферта",
+    doc_payment: "Оплата и доставка",
+    doc_returns: "Возврат и обмен",
+    ft_seller: "ФЛП [фамилия, имя, отчество]. ИНН [0000000000].",
+    ft_allergens: "Аллергены: в тортах есть глютен, яйца, молоко, орехи. Напишите, если у вас аллергия."
+  }
+};
+
+/* ===== STATE ===== */
+var KEY = "hsc-v6";
+var S = { lang: "uk", mode: "cake", filling: null, kg: null, decor: [], lastDecor: null, wish: "", date: "", daily: {}, lastDaily: null, ret: false };
+try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved && typeof saved === "object") { for (var k in S) if (k in saved) S[k] = saved[k]; } } catch (e) {}
+if (!I18N[S.lang]) S.lang = "uk";
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+var FLOW = { cake: ["filling", "weight", "decor", "date", "summary"], daily: ["everyday", "date", "summary"] };
+var NB = " ";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+var canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+var advTimer = 0, lastRoute = null, dir = "fwd";
+
+/* ===== helpers ===== */
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function t(key, vars) {
+  var s = I18N[S.lang][key];
+  if (s === undefined) return "[[" + key + "]]";
+  if (vars) for (var v in vars) s = s.split("{" + v + "}").join(vars[v]);
+  return s;
+}
+function L(o) { return o[S.lang]; }
+function by(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
+function money(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, NB); }
+function kgStr(k) { return String(k).replace(".", ","); }
+function plural(n, forms) {
+  var a = n % 10, b = n % 100;
+  return a === 1 && b !== 11 ? forms[0] : (a >= 2 && a <= 4 && (b < 12 || b > 14) ? forms[1] : forms[2]);
+}
+function guestsOf(kg) { return Math.floor(kg * 1000 / RULES.gramsPerGuest); }
+function guestsStr(kg) { var n = guestsOf(kg); return "≈" + NB + n + NB + plural(n, I18N[S.lang].guests); }
+function cakeSum() { var f = by(FILLINGS, S.filling); return f && S.kg ? f.price * S.kg : 0; }
+function dailyCount() { var n = 0; for (var id in S.daily) n += S.daily[id] || 0; return n; }
+function dailySum() { var n = 0; DAILY.forEach(function (d) { n += (S.daily[d.id] || 0) * d.price; }); return n; }
+function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function parseIso(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; }
+function daysAhead(d) { return Math.round((d - today()) / 86400000); }
+function locale() { return S.lang === "uk" ? "uk-UA" : "ru-RU"; }
+function fmtDate(d, opts) { return new Intl.DateTimeFormat(locale(), opts).format(d); }
+function dateNum(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear(); }
+function inDays(n) {
+  if (n < 0) return t("t_past");
+  if (n === 0) return t("t_today");
+  if (n === 1) return t("t_tomorrow");
+  return t("t_in", { n: n, days: plural(n, I18N[S.lang].days) });
+}
+function lum(hex) {
+  var n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+var ICON = {
+  back: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>',
+  go: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg>',
+  check: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg>',
+  minus: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 10h12"/></svg>',
+  plus: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg>',
+  warn: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M12 3.5L22 20.5H2L12 3.5zM12 10v5M12 17.6v.4"/></svg>'
+};
+
+/* ===== THE STAGE: one picture, replaced on every answer ===== */
+var stageKey = null;
+/* Photo facts come from img/photos.js. A photo is shown LARGE only when it is not a stand-in; its box is capped at
+   0.75 x the natural size, so it is never stretched past the sharpness rule. A stand-in is a framed print (<= 360 px). */
+function pinfo(name) { var p = PHOTOS[name]; return p && p.w ? p : { src: "img/" + name + ".webp", w: 0, h: 0, standin: true }; }
+function isLarge(name) { var p = pinfo(name); return !p.standin && p.w > 0; }
+function bigPhoto(name, alt, o) {
+  var p = pinfo(name);
+  var style = "--mw:" + Math.floor(p.w * 0.75) + "px;--mh:" + Math.floor(p.h * 0.75) + "px" + (o && o.pm ? ";--pos-m:" + o.pm + ";--pos-d:" + o.pd : "");
+  return '<div class="pic"><img class="st-img' + (o && o.whole ? " whole" : "") + '" src="' + p.src + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc(alt) + '" decoding="async" style="' + style + '"></div>';
+}
+function printFig(name, alt, small) {
+  var p = pinfo(name);
+  var cap = p.standin ? '<figcaption><b class="chip">DRAFT</b><span>' + esc(t("standin")) + "</span></figcaption>" : "";
+  return '<figure class="print' + (small ? " print-s" : "") + '"><img src="' + p.src + '"' + (p.w ? ' width="' + p.w + '" height="' + p.h + '"' : "") +
+    ' alt="' + esc(alt) + '" decoding="async" style="--mh:' + (p.w ? Math.floor(p.h * 0.75) : 360) + 'px">' + cap + "</figure>";
+}
+/* draft = the picture beside these words is a stand-in: the DRAFT mark sits in the label line on phones (.kx) and
+   as a note under the words on larger screens (.say-x) - never on the photo */
+function say(k, v, s1, s2, draft) {
+  return '<div class="say"><p class="say-k">' + esc(k) + (draft ? ' <span class="kx"><b class="chip">DRAFT</b> ' + esc(t("standin_short")) + "</span>" : "") +
+    '</p><p class="say-v">' + esc(v) + "</p>" +
+    (s1 ? '<p class="say-s">' + esc(s1) + "</p>" : "") + (s2 ? '<p class="say-s">' + esc(s2) + "</p>" : "") +
+    (draft ? '<p class="say-x"><b class="chip">DRAFT</b> ' + esc(t("standin")) + "</p>" : "") + "</div>";
+}
+/* A stand-in (or a photo too small for the slot) is a print with the words of the answer beside it; a real photo
+   that passes the sharpness rule is drawn large. */
+function photoScene(name, alt, words) {
+  if (isLarge(name)) return bigPhoto(name, alt, { whole: true });
+  return '<div class="scene">' + printFig(name, alt, false) + words + "</div>";
+}
+/* The cake from above: grows with the weight (monotonic, a scheme - not to scale); one slice per guest (150 g). */
+function tvK(kg) { return 0.25 + 0.75 * Math.sqrt(Math.min(kg, RULES.maxKg) / RULES.maxKg); }
+function edgeOf() { var f = by(FILLINGS, S.filling) || FILLINGS[0]; return f.L[0].c; }
+function topView(o) {
+  return '<div class="tv"><div class="tv-plate" role="img" aria-label="' + esc(o.aria) + '"><div class="tv-cake' + (o.n ? "" : " plain") +
+    '" style="--k:' + o.k.toFixed(3) + ";--edge:" + o.edge + (o.n ? ";--n:" + o.n : "") + '">' +
+    (o.txt ? '<span class="tv-txt">' + esc(o.txt) + "</span>" : "") + '</div></div><p class="tv-cap">' + esc(t("tv_cap")) + "</p></div>";
+}
+/* Re-render a scene in place (no new wipe): copy the parts that changed from a fresh render. */
+function patch(layer, html, sels) {
+  var tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  sels.forEach(function (s) {
+    var a = layer.querySelector(s), b = tmp.querySelector(s);
+    if (a && b) a.outerHTML !== b.outerHTML && a.parentNode.replaceChild(b, a);
+  });
+}
+function patchCake(layer, html) {
+  /* keep the same .tv-cake element so its width can transition */
+  var tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  var a = layer.querySelector(".tv-cake"), b = tmp.querySelector(".tv-cake");
+  if (a && b) { a.setAttribute("style", b.getAttribute("style")); a.className = b.className; a.innerHTML = b.innerHTML; }
+  var pa = layer.querySelector(".tv-plate"), pb = tmp.querySelector(".tv-plate");
+  if (pa && pb) pa.setAttribute("aria-label", pb.getAttribute("aria-label"));
+}
+function visFilling(id) {
+  var f = by(FILLINGS, id) || FILLINGS[0];
+  if (f.photo) return { key: "fill:" + f.id + ":" + S.lang, html: isLarge(f.photo) ? bigPhoto(f.photo, t("alt_cut", { name: L(f) }), f) :
+    '<div class="scene">' + printFig(f.photo, t("alt_cut", { name: L(f) }), false) + say(t("r_filling"), L(f), f.L.map(L).join(", ")) + "</div>" };
+  var names = f.L.map(L);
+  var bands = f.L.map(function (l) {
+    var flex = l.k === "s" ? 1.5 : l.k === "c" ? 1.05 : l.k === "x" ? 0.8 : 0.7;
+    return '<div class="band" style="flex:' + flex + ";background:" + l.c + ";color:" + (lum(l.c) > 0.36 ? "#14352A" : "#FBF7F0") + '"><span>' + esc(L(l)) + "</span></div>";
+  }).join("");
+  return { key: "fill:" + f.id + ":" + S.lang, html: '<div class="slab-wrap"><p class="slab-name">' + esc(L(f)) + '</p><div class="slab" role="img" aria-label="' + esc(t("scheme_aria", { name: L(f), layers: names.join(", ") })) + '">' + bands + '</div><div class="plate"></div><ul class="slab-legend" aria-hidden="true">' +
+    f.L.map(function (l) { return '<li><i style="background:' + l.c + '"></i>' + esc(L(l)) + "</li>"; }).join("") + '</ul><p class="st-cap">' + esc(t("scheme")) + "</p></div>" };
+}
+/* Weight: the whole-cake PHOTO grows with the kilograms (owner, 02.10). Smallest at 1,5 kg, growing through 4 kg and
+   on with the stepper up to the cap at 6,5 kg. The photo stands bare on the panel: its backdrop is exactly the panel
+   ground (221,195,185; edge pixels measured equal), so no rectangle shows - no frame, no filter. The cap: a stand-in
+   never passes 360 px on its long side; a real file (photos.js standin:false) is capped at 0.75 x its natural height. */
+function wtGrow(kg) { return 0.55 + 0.45 * Math.min(1, Math.max(0, (kg - RULES.minKg) / (6.5 - RULES.minKg))); }
+function visWeight(kg) {
+  var n = guestsOf(kg), p = pinfo(WHOLE.photo);
+  var cap = p.standin || !p.w ? 360 : Math.floor(p.h * 0.75);
+  var html = '<div class="scene scene-w"><div class="wt" style="--cap:' + cap + 'px;--ar:' + (p.w ? (p.w / p.h).toFixed(4) : 0.8) + '">' +
+    '<img class="wt-img" src="' + p.src + '"' + (p.w ? ' width="' + p.w + '" height="' + p.h + '"' : "") + ' alt="' + esc(t("alt_whole")) +
+    '" decoding="async" style="--g:' + wtGrow(kg).toFixed(3) + '"></div>' +
+    '<div class="w-side">' + say(t("r_weight"), kgStr(kg) + NB + t("kg"), guestsStr(kg), t("tv_slices", { n: n, slices: plural(n, I18N[S.lang].slices) }), p.standin) + "</div></div>";
+  return { key: "weight:" + S.lang, html: html,
+    update: function (layer) {
+      var im = layer.querySelector(".wt-img");
+      if (im) im.style.setProperty("--g", wtGrow(kg).toFixed(3));
+      patch(layer, html, [".say"]);
+    } };
+}
+function tag(name, line) {
+  return '<div class="tag"><p class="tag-name">' + esc(name) + '</p><p class="tag-line">' + esc(line) + '</p><p class="tag-soon">' + esc(t("soon")) + "</p></div>";
+}
+function wishText() { var w = S.wish.trim(); return w ? (w.length > 60 ? w.slice(0, 58) + "..." : w) : t("d_text_sample"); }
+function visDecor() {
+  var id = S.lastDecor && S.decor.indexOf(S.lastDecor) >= 0 ? S.lastDecor : (S.decor.length ? S.decor[S.decor.length - 1] : null);
+  if (!id) return { key: "decor:none:" + S.filling + ":" + S.lang, html: '<div class="scene">' + topView({ k: 0.82, edge: edgeOf(), aria: t("d_base") }) + say(t("r_decor"), t("d_base"), t("r_nodecor")) + "</div>" };
+  var d = by(DECOR, id), hint = S.lang === "uk" ? d.hk : d.hr;
+  if (id === "flowers") return { key: "decor:flowers:" + S.lang, html: photoScene(d.photo, t("alt_roses"), say(t("r_decor"), L(d), hint, "", pinfo(d.photo).standin)) };
+  if (id === "text") {
+    var html = '<div class="scene">' + topView({ k: 0.9, edge: edgeOf(), txt: wishText(), aria: t("tv_text_aria", { text: wishText() }) }) + say(t("r_decor"), L(d), hint) + "</div>";
+    return { key: "decor:text:" + S.filling + ":" + S.lang, html: html, update: function (layer) { patchCake(layer, html); } };
+  }
+  return { key: "decor:" + id + ":" + S.lang, html: tag(L(d), hint) };
+}
+function visLeaf() {
+  var chosen = parseIso(S.date), d = chosen || new Date(today().getTime() + RULES.leadDays * 86400000 + 43200000);
+  d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var note = chosen ? inDays(daysAhead(d)) : t("t_earliest");
+  return { key: "leaf:" + iso(d) + ":" + (chosen ? 1 : 0) + ":" + S.lang,
+    html: '<div class="leaf" role="img" aria-label="' + esc(t("leaf_aria", { date: fmtDate(d, { day: "numeric", month: "long", year: "numeric" }) })) + '"><div class="leaf-top">' + esc(fmtDate(d, { month: "long" }) + " " + d.getFullYear()) + '</div><div class="leaf-day">' + d.getDate() + '</div><div class="leaf-wd">' + esc(fmtDate(d, { weekday: "long" })) + '</div><div class="leaf-in">' + esc(note) + "</div></div>" };
+}
+function visDaily(id) {
+  var d = by(DAILY, id) || DAILY[0], q = S.daily[d.id] || 0;
+  var line = (S.lang === "uk" ? d.uu : d.ur) + ", " + d.price + NB + t("uah"), inOrder = q ? t("in_order", { n: q }) : "";
+  if (d.photo) return { key: "daily:" + d.id + ":" + q + ":" + S.lang, html: photoScene(d.photo, L(d), say(t("r_items"), L(d), line, inOrder, pinfo(d.photo).standin)) };
+  return { key: "daily:" + d.id + ":" + q + ":" + S.lang, html: tag(L(d), line + (q ? ", " + inOrder : "")) };
+}
+function firstDaily() { for (var i = 0; i < DAILY.length; i++) if (S.daily[DAILY[i].id]) return DAILY[i].id; return DAILY[0].id; }
+function setStage(vis, instant) {
+  var stage = $("stage");
+  if (vis.key === stageKey) { if (vis.update && stage.lastElementChild) vis.update(stage.lastElementChild); return; }
+  stageKey = vis.key;
+  var layer = document.createElement("div");
+  layer.className = "st-layer" + (instant ? "" : " in");
+  layer.innerHTML = vis.html;
+  stage.appendChild(layer);
+  stage.setAttribute("data-key", vis.key);
+  var drop = function () { while (stage.firstElementChild && stage.firstElementChild !== layer && stage.children.length > 1) stage.removeChild(stage.firstElementChild); };
+  if (instant || reduce.matches) drop(); else setTimeout(drop, 640);
+}
+function stageFor(route) {
+  if (route === "cover") return { key: "hero", html: bigPhoto(HERO.photo, t("alt_cut", { name: L(FILLINGS[1]) }), HERO) };
+  if (route === "filling") return visFilling(S.filling || FILLINGS[0].id);
+  if (route === "weight") return visWeight(S.kg || 2.5);
+  if (route === "decor") return visDecor();
+  if (route === "date") return visLeaf();
+  if (route === "everyday") return visDaily(S.lastDaily && S.daily[S.lastDaily] ? S.lastDaily : firstDaily());
+  if (route === "summary") return S.mode === "cake" ? visFilling(S.filling) : visDaily(firstDaily());
+  return { key: "hero", html: bigPhoto(HERO.photo, "", HERO) };
+}
+/* The ticket under the picture: the order so far, the current question marked. */
+function ticketHtml(route) {
+  var cols, f = by(FILLINGS, S.filling), d = parseIso(S.date), flow = FLOW[S.mode];
+  if (S.mode === "cake") {
+    var pastDecor = flow.indexOf(route) > flow.indexOf("decor");
+    cols = [["filling", t("r_filling"), f ? L(f) : ""], ["weight", t("r_weight"), S.kg ? kgStr(S.kg) + NB + t("kg") : ""],
+      ["decor", t("r_decor"), S.decor.length ? decorNames().join(", ") : (pastDecor ? t("tk_nodecor") : "")], ["date", t("r_date"), d ? dateNum(d) : ""]];
+  } else {
+    cols = [["everyday", t("r_items"), dailyCount() ? dailyCount() + NB + t("pcs") + ", " + money(dailySum()) + NB + t("uah") : ""], ["date", t("r_date"), d ? dateNum(d) : ""]];
+  }
+  return cols.map(function (c) {
+    return '<div class="tk' + (c[0] === route ? " now" : "") + '"><p class="tk-k">' + esc(c[1]) + '</p><p class="tk-v' + (c[2] ? "" : " empty") + '">' + esc(c[2] || t("tk_empty")) + "</p></div>";
+  }).join("");
+}
+function syncTicket() { $("ticket").innerHTML = ticketHtml(routeFromHash()); }
+
+/* ===== ROUTING ===== */
+function routeFromHash() { var r = location.hash.replace(/^#/, ""); return r === "" ? "cover" : r; }
+function guard(route) {
+  if (route === "cover") return route;
+  if (route === "filling" || route === "weight" || route === "decor") S.mode = "cake";
+  if (route === "everyday") S.mode = "daily";
+  var flow = FLOW[S.mode];
+  if (flow.indexOf(route) < 0) return "cover";
+  if (S.mode === "cake") {
+    if (route !== "filling" && !S.filling) return "filling";
+    if ((route === "decor" || route === "date" || route === "summary") && !S.kg) return "weight";
+  } else if (route !== "everyday" && !dailyCount()) return "everyday";
+  if (route === "summary" && !S.date) return "date";
+  return route;
+}
+function go(route) {
+  clearTimeout(advTimer);
+  var target = route === "cover" ? "" : route;
+  if (location.hash.replace(/^#/, "") === target) render(); else location.hash = target;
+}
+function nextOf(route) { var f = FLOW[S.mode], i = f.indexOf(route); return S.ret ? "summary" : f[Math.min(f.length - 1, i + 1)]; }
+function prevOf(route) { var f = FLOW[S.mode], i = f.indexOf(route); return S.ret ? "summary" : (i <= 0 ? "cover" : f[i - 1]); }
+function canNext(route) {
+  return route === "filling" ? !!S.filling : route === "weight" ? !!S.kg : route === "date" ? !!S.date : route === "everyday" ? dailyCount() > 0 : true;
+}
+function advance(route) {
+  clearTimeout(advTimer);
+  advTimer = setTimeout(function () { go(nextOf(route)); }, reduce.matches ? 120 : 620);
+}
+
+/* ===== SCREENS ===== */
+function head(route, hKey, pKey) {
+  var flow = FLOW[S.mode], n = flow.indexOf(route) + 1, m = flow.length, segs = "";
+  for (var i = 1; i <= m; i++) segs += "<li" + (i <= n ? ' class="on"' : "") + "></li>";
+  return '<div class="prog-row"><span class="prog-l" id="progl">' + esc(t("step", { n: n, m: m })) + '</span><ol class="prog" aria-hidden="true">' + segs + "</ol>" +
+    '<span class="dchip"><b class="chip">DRAFT</b> ' + esc(t("draft_short")) + "</span></div>" +
+    '<h2 id="q" tabindex="-1">' + esc(t(hKey)) + "</h2>" + (pKey ? '<p class="sub">' + esc(t(pKey)) + "</p>" : "");
+}
+function scrCover() {
+  return '<div class="screen cover ' + dir + '"><h1 id="q" tabindex="-1">' + esc(t("cover_h")) + '</h1><p class="lead">' + esc(t("cover_p")) + "</p>" +
+    '<button type="button" class="btn btn-pri" data-act="start">' + esc(t("cover_cta")) + ICON.go + "</button>" +
+    '<a class="alt" href="#everyday">' + esc(t("cover_alt")) + "</a></div>";
+}
+function scrFilling() {
+  var rows = FILLINGS.map(function (f) {
+    var sw = f.L.map(function (l) { return '<i style="flex:' + (l.k === "s" ? 1.5 : 1) + ";background:" + l.c + '"></i>'; }).join("");
+    return '<button type="button" class="opt opt-f" data-act="fill" data-id="' + f.id + '" aria-pressed="' + (S.filling === f.id) + '">' +
+      '<span class="sw" aria-hidden="true">' + sw + "</span>" +
+      '<span class="opt-name">' + esc(L(f)) + "</span>" +
+      '<span class="opt-price">' + f.price + " <span>" + esc(t("perKg")) + "</span></span>" +
+      '<span class="opt-hint">' + esc(f.L.map(L).join(", ")) + "</span></button>";
+  }).join("");
+  return '<div class="screen step ' + dir + '">' + head("filling", "f_h", "f_p") +
+    '<div class="opts opts-f" role="group" aria-labelledby="q">' + rows + "</div>" +
+    '<p class="ph">' + esc(t("f_proof")) + "</p></div>";
+}
+function kgCard(kg) {
+  var f = by(FILLINGS, S.filling);
+  return '<button type="button" class="opt opt-w" data-act="kg" data-kg="' + kg + '" aria-pressed="' + (S.kg === kg) + '">' +
+    '<span class="kg">' + kgStr(kg) + " <small>" + esc(t("kg")) + "</small></span>" +
+    '<span class="gu">' + esc(guestsStr(kg)) + "</span>" +
+    '<span class="pr">' + money(f.price * kg) + NB + esc(t("uah")) + "</span></button>";
+}
+function moreRow() {
+  var f = by(FILLINGS, S.filling), big = S.kg && S.kg > 4, kg = big ? S.kg : 4.5;
+  return '<div class="more" id="more"><p>' + esc(t("w_more")) + "<small>" + (big ? esc(guestsStr(kg)) + ", " + money(f.price * kg) + NB + esc(t("uah")) : esc(t("w_min"))) + "</small></p>" +
+    '<div class="stepper"><button type="button" data-act="kg-" aria-label="' + esc(t("w_less")) + '"' + (big ? "" : " disabled") + ">" + ICON.minus + "</button>" +
+    '<output id="kgbig" aria-live="polite">' + (big ? kgStr(kg) + NB + esc(t("kg")) : "4+" + NB + esc(t("kg"))) + "</output>" +
+    '<button type="button" data-act="kg+" aria-label="' + esc(t("w_plus")) + '"' + (big && kg >= RULES.maxKg ? " disabled" : "") + ">" + ICON.plus + "</button></div></div>";
+}
+function scrWeight() {
+  return '<div class="screen step ' + dir + '">' + head("weight", "w_h", "w_p") +
+    '<div class="opts opts-w" role="group" aria-labelledby="q">' + KG_CARDS.map(kgCard).join("") + "</div>" + moreRow() + "</div>";
+}
+function scrDecor() {
+  var rows = DECOR.map(function (d) {
+    return '<button type="button" class="opt opt-c" data-act="decor" data-id="' + d.id + '" aria-pressed="' + (S.decor.indexOf(d.id) >= 0) + '">' +
+      '<span class="box" aria-hidden="true">' + ICON.check + '</span><span class="opt-name">' + esc(L(d)) + '</span><span class="opt-hint">' + esc(S.lang === "uk" ? d.hk : d.hr) + "</span></button>";
+  }).join("");
+  return '<div class="screen step ' + dir + '">' + head("decor", "d_h", "d_p") +
+    '<div class="opts" role="group" aria-labelledby="q">' + rows + "</div>" +
+    '<div class="field"><label for="wish">' + esc(t("d_wish")) + '<span class="help">' + esc(t("d_wish_help")) + "</span></label>" +
+    '<textarea id="wish" maxlength="300" placeholder="' + esc(t("d_wish_ph")) + '">' + esc(S.wish) + "</textarea></div>" +
+    '<p class="note">' + esc(t("d_example")) + "</p>" +
+    '<p class="baseline"><span>' + esc(t("d_base")) + '</span><b id="base">' + money(cakeSum()) + NB + esc(t("uah")) + "</b></p></div>";
+}
+function scrDate() {
+  var d = parseIso(S.date), late = d && daysAhead(d) < RULES.leadDays;
+  return '<div class="screen step ' + dir + '">' + head("date", "t_h", "t_p") +
+    '<div class="field"><label for="date">' + esc(t(S.mode === "cake" ? "t_label" : "t_label_daily")) + "</label>" +
+    '<input type="date" id="date" min="' + iso(today()) + '" value="' + esc(S.date) + '" aria-describedby="warn"></div>' +
+    '<p class="warn" id="warn" role="alert"' + (late ? "" : " hidden") + ">" + ICON.warn + "<span>" + esc(t("t_warn")) + "</span></p>" +
+    '<p class="note">' + esc(t("t_how")) + "</p></div>";
+}
+function dateLine() {
+  var d = parseIso(S.date);
+  return d ? dateNum(d) + " (" + fmtDate(d, { weekday: "short" }) + ")" : "";
+}
+function row(label, value, small, route) {
+  return '<div class="row"><dt>' + esc(label) + '</dt><dd><span class="val">' + value + (small ? "<small>" + small + "</small>" : "") + '</span><button type="button" class="edit" data-act="edit" data-go="' + route + '">' + esc(t("r_edit")) + '<span class="vh">: ' + esc(label) + "</span></button></dd></div>";
+}
+function scrSummary() {
+  var cake = S.mode === "cake", rows = "", sum, d = parseIso(S.date), late = d && daysAhead(d) < RULES.leadDays;
+  if (cake) {
+    var f = by(FILLINGS, S.filling);
+    sum = cakeSum();
+    rows += row(t("r_filling"), esc(L(f)), f.price + NB + esc(t("perKg")), "filling");
+    rows += row(t("r_weight"), kgStr(S.kg) + NB + esc(t("kg")), esc(guestsStr(S.kg)), "weight");
+    rows += row(t("r_decor"), S.decor.length ? esc(decorNames().join(", ")) : esc(t("r_nodecor")), S.wish.trim() ? esc(S.wish.trim()) : "", "decor");
+  } else {
+    sum = dailySum();
+    var items = DAILY.filter(function (x) { return S.daily[x.id]; }).map(function (x) {
+      return esc(L(x)) + "<small>" + S.daily[x.id] + NB + esc(t("pcs")) + " x " + x.price + NB + esc(t("uah")) + " = " + money(S.daily[x.id] * x.price) + NB + esc(t("uah")) + "</small>";
+    }).join("");
+    rows += row(t("r_items"), items, "", "everyday");
+  }
+  rows += row(t("r_date"), esc(dateLine()), d ? esc(inDays(daysAhead(d))) : "", "date");
+  var how = (cake ? I18N[S.lang].how : I18N[S.lang].how_daily).map(function (x) { return "<li><span>" + esc(x) + "</span></li>"; }).join("");
+  return '<div class="screen step ' + dir + '">' + head("summary", cake ? "s_h" : "s_h_daily", null) +
+    (late ? '<p class="warn" id="warn">' + ICON.warn + "<span>" + esc(t("t_warn")) + "</span></p>" : "") +
+    '<p class="total"><b id="total">' + money(sum) + NB + esc(t("uah")) + "</b><span>" + esc(t(cake ? "s_total" : "s_total_daily")) + "</span></p>" +
+    (cake ? '<p class="sub">' + esc(t("s_decor_note")) + "</p>" : "") +
+    '<dl class="rows">' + rows + "</dl>" +
+    '<div class="how"><h3>' + esc(t("how_h")) + "</h3><ol>" + how + "</ol></div>" +
+    '<div class="send"><h3>' + esc(t("send_h")) + "</h3><p>" + esc(t("send_p")) + "</p>" +
+    '<button type="button" class="edit copy" data-act="copy">' + esc(t("copy")) + "</button></div>" +
+    '<p class="ph">' + esc(t("about_ph")) + "</p></div>";
+}
+function scrEveryday() {
+  var rows = DAILY.map(function (d) {
+    var q = S.daily[d.id] || 0;
+    return '<div class="item' + (q ? " has" : "") + '" data-id="' + d.id + '"><p><span class="opt-name">' + esc(L(d)) + '</span><span class="opt-hint" style="display:block">' + esc(S.lang === "uk" ? d.uu : d.ur) + ", " + d.price + NB + esc(t("uah")) + "</span></p>" +
+      '<div class="stepper"><button type="button" data-act="q-" data-id="' + d.id + '" aria-label="' + esc(t("e_minus", { name: L(d) })) + '"' + (q ? "" : " disabled") + ">" + ICON.minus + "</button>" +
+      '<output aria-live="polite">' + q + "</output>" +
+      '<button type="button" data-act="q+" data-id="' + d.id + '" aria-label="' + esc(t("e_plus", { name: L(d) })) + '"' + (q >= 30 ? " disabled" : "") + ">" + ICON.plus + "</button></div></div>";
+  }).join("");
+  return '<div class="screen step ' + dir + '">' + head("everyday", "e_h", "e_p") +
+    '<div class="opts" role="group" aria-labelledby="q">' + rows + "</div>" +
+    '<p class="baseline"><span>' + esc(t("e_total")) + '</span><b id="base">' + money(dailySum()) + NB + esc(t("uah")) + "</b></p></div>";
+}
+/* Footer (ROUND2 Job 2): fixed strings from the dictionary; every placeholder carries the DRAFT mark. */
+function links(list) {
+  /* "A, B, C": the comma and space sit in a .sep span so the 44 px link boxes never overlap */
+  return list.map(function (l, i) {
+    return '<a href="' + esc(l[1]) + '"' + (l[2] ? ' target="_blank" rel="noopener"' : "") + ">" + esc(l[0]) + "</a>" + (i < list.length - 1 ? '<span class="sep">, </span>' : "");
+  }).join("");
+}
+function footHtml() {
+  var dr = '<span class="dr">DRAFT</span>', q = "?lang=" + S.lang;
+  var docs = [["privacy", "doc_privacy"], ["offer", "doc_offer"], ["payment", "doc_payment"], ["returns", "doc_returns"]].map(function (d) {
+    return '<li><a href="legal.html' + q + "#" + d[0] + '">' + esc(t(d[1])) + "</a></li>";
+  }).join("");
+  return '<footer class="foot" id="foot"><div class="foot-grid">' +
+    '<section><h3>' + esc(t("ft_hours_h")) + "</h3><p>" + dr + esc(t("ft_hours1")) + "</p><p>" + dr + esc(t("ft_hours2")) + "</p><p>" + dr + esc(t("ft_pickup")) + "</p><p>" + dr + esc(t("ft_delivery")) + "</p></section>" +
+    '<section><h3>' + esc(t("ft_contacts_h")) + "</h3><p>" + dr + '<a href="tel:+' + CONFIG.PHONE + '">+380 00 000 00 00</a></p>' +
+    "<p>" + links([["Viber", LINKS.viber(), false], ["Telegram", LINKS.telegram(), true], ["WhatsApp", SOC.whatsapp, true]]) + "</p></section>" +
+    '<section><h3>' + esc(t("ft_social_h")) + "</h3><p>" + dr + links([["Instagram", SOC.instagram, true], ["Facebook", SOC.facebook, true], ["TikTok", SOC.tiktok, true]]) + "</p></section>" +
+    '<section class="foot-docs"><h3>' + esc(t("ft_docs_h")) + "</h3><ul>" + docs + "</ul></section></div>" +
+    '<div class="foot-fine"><p>' + dr + esc(t("ft_seller")) + "</p><p>" + dr + esc(t("ft_allergens")) + "</p><p>" + esc(t("draft")) + "</p></div>" +
+    '<p class="foot-copy">© 2026 Home Sweet Cake</p></footer>';
+}
+function decorNames() { return DECOR.filter(function (d) { return S.decor.indexOf(d.id) >= 0; }).map(function (d) { return L(d).toLowerCase(); }); }
+
+/* ===== ORDER TEXT + MESSENGERS ===== */
+function orderText() {
+  var lines = [], d = parseIso(S.date);
+  if (S.mode === "cake") {
+    var f = by(FILLINGS, S.filling);
+    lines.push(t("m_hello"));
+    lines.push(t("r_filling") + ": " + L(f) + " (" + f.price + " " + t("perKg") + ")");
+    lines.push(t("r_weight") + ": " + kgStr(S.kg) + " " + t("kg") + " (" + guestsStr(S.kg).split(NB).join(" ") + ")");
+    lines.push(t("r_decor") + ": " + (S.decor.length ? decorNames().join(", ") : t("r_nodecor")));
+    if (S.wish.trim()) lines.push(t("r_wish") + ": " + S.wish.trim());
+    if (d) lines.push(t("r_date") + ": " + dateLine());
+    lines.push(t("m_est", { sum: money(cakeSum()).split(NB).join(" ") }));
+  } else {
+    lines.push(t("m_hello_daily"));
+    DAILY.forEach(function (x) {
+      var q = S.daily[x.id];
+      if (q) lines.push("- " + L(x) + ": " + q + " " + t("pcs") + " x " + x.price + " " + t("uah") + " = " + money(q * x.price).split(NB).join(" ") + " " + t("uah"));
+    });
+    if (d) lines.push(t("r_date") + ": " + dateLine());
+    lines.push(t("m_total", { sum: money(dailySum()).split(NB).join(" ") }));
+  }
+  return lines.join("\n");
+}
+var SOC = {
+  instagram: "https://www.instagram.com/" + CONFIG.IGHANDLE + "/",
+  facebook: "https://www.facebook.com/" + CONFIG.FBHANDLE,
+  tiktok: "https://www.tiktok.com/@" + CONFIG.TTHANDLE,
+  whatsapp: "https://wa.me/" + CONFIG.PHONE
+};
+var LINKS = {
+  viber: function () { return "viber://chat?number=%2B" + CONFIG.PHONE; },
+  telegram: function () { return "https://t.me/" + CONFIG.USERNAME; },
+  instagram: function () { return "https://ig.me/m/" + CONFIG.IGHANDLE; },
+  whatsapp: function () { return "https://wa.me/" + CONFIG.PHONE + "?text=" + encodeURIComponent(orderText()); }
+};
+function copyText(text) {
+  var done = function (ok) { var s = $("status"); if (s) s.textContent = t(ok ? "copied" : "copyFail"); };
+  var legacy = function () {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta); done(ok);
+    } catch (e) { done(false); }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, legacy);
+  else legacy();
+}
+
+/* ===== NAV ===== */
+function navHtml(route) {
+  var back = '<button type="button" class="back" data-act="back" aria-label="' + esc(t("back")) + '">' + ICON.back + "</button>";
+  if (route === "cover") return "";
+  if (route === "summary") {
+    return back +
+      '<a class="btn btn-pri" id="m-viber" data-act="msg" data-m="viber" href="' + LINKS.viber() + '">Viber</a>' +
+      '<a class="btn btn-sec" id="m-telegram" data-act="msg" data-m="telegram" target="_blank" rel="noopener" href="' + LINKS.telegram() + '">Telegram</a>' +
+      '<a class="btn btn-sec" id="m-instagram" data-act="msg" data-m="instagram" target="_blank" rel="noopener" href="' + LINKS.instagram() + '">Instagram</a>' +
+      '<a class="btn btn-sec" id="m-whatsapp" data-m="whatsapp" target="_blank" rel="noopener" href="' + esc(LINKS.whatsapp()) + '">WhatsApp</a>' +
+      '<p class="status" id="status" role="status" aria-live="polite"></p>';
+  }
+  var flow = FLOW[S.mode], label = S.ret ? t("done") : (flow.indexOf(route) === flow.length - 2 ? t("toSummary") : t("next"));
+  return back + '<button type="button" class="btn btn-pri" id="next" data-act="next"' + (canNext(route) ? "" : " disabled") + ">" + esc(label) + ICON.go + "</button>";
+}
+function syncNext(route) { var b = $("next"); if (b) b.disabled = !canNext(route); }
+
+/* ===== RENDER ===== */
+function render(keepFocus, instantStage) {
+  var want = routeFromHash(), route = guard(want);
+  if (route !== want) { location.replace("#" + (route === "cover" ? "" : route)); return; }
+  if (route === "summary") S.ret = false;
+  var order = ["cover", "filling", "everyday", "weight", "decor", "date", "summary"];
+  dir = lastRoute && order.indexOf(route) < order.indexOf(lastRoute) ? "bwd" : "fwd";
+  var first = lastRoute === null, changed = lastRoute !== route;
+  if (!changed) dir = "";
+  var app = $("app");
+  app.setAttribute("data-route", route);
+  app.setAttribute("data-sticky", route === "filling" || route === "weight" || route === "decor" || route === "everyday" ? "1" : "0");
+  document.documentElement.lang = S.lang;
+  document.title = t("title");
+  $("draft").textContent = t("draft");
+  $("lang").setAttribute("aria-label", t("langGroup"));
+  $("stage").setAttribute("aria-label", t("stageLabel"));
+  Array.prototype.forEach.call($("lang").children, function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-lang") === S.lang); });
+  var scr = { cover: scrCover, filling: scrFilling, weight: scrWeight, decor: scrDecor, date: scrDate, summary: scrSummary, everyday: scrEveryday }[route];
+  $("pane").innerHTML = scr();
+  /* the footer band closes the cover and the summary only; the steps in between stay one clean screen */
+  var withFoot = route === "cover" || route === "summary";
+  $("footwrap").innerHTML = withFoot ? footHtml() : "";
+  document.documentElement.setAttribute("data-foot", withFoot ? "1" : "0");
+  document.documentElement.setAttribute("data-route", route);
+  var nav = $("nav");
+  nav.className = "nav" + (route === "summary" ? " nav-msg" : "");
+  nav.innerHTML = navHtml(route);
+  setStage(stageFor(route), first || instantStage);
+  syncTicket();
+  if (changed) {
+    window.scrollTo(0, 0); $("pane").scrollTop = 0;
+    if (!first && !keepFocus) { var q = $("q"); if (q) q.focus({ preventScroll: true }); }
+  }
+  lastRoute = route;
+  save();
+}
+
+/* ===== EVENTS ===== */
+document.addEventListener("click", function (e) {
+  var el = e.target.closest("[data-act],[data-lang]");
+  if (!el) return;
+  var route = routeFromHash(), act = el.getAttribute("data-act"), id = el.getAttribute("data-id");
+  if (el.hasAttribute("data-lang")) { S.lang = el.getAttribute("data-lang"); stageKey = null; render(true, true); el = document.querySelector('[data-lang="' + S.lang + '"]'); if (el) el.focus(); return; }
+  if (act === "start") { S.mode = "cake"; S.ret = false; go("filling"); }
+  else if (act === "back") { go(prevOf(route)); }
+  else if (act === "next") { if (canNext(route)) go(nextOf(route)); }
+  else if (act === "edit") { S.ret = true; go(el.getAttribute("data-go")); }
+  else if (act === "fill") {
+    S.filling = id;
+    document.querySelectorAll('[data-act="fill"]').forEach(function (b) { b.setAttribute("aria-pressed", b === el); });
+    setStage(visFilling(id)); syncTicket(); syncNext(route); save(); advance(route);
+  }
+  else if (act === "kg") {
+    S.kg = parseFloat(el.getAttribute("data-kg"));
+    document.querySelectorAll('[data-act="kg"]').forEach(function (b) { b.setAttribute("aria-pressed", b === el); });
+    $("more").outerHTML = moreRow();
+    setStage(visWeight(S.kg)); syncTicket(); syncNext(route); save(); advance(route);
+  }
+  else if (act === "kg+" || act === "kg-") {
+    clearTimeout(advTimer);
+    var cur = S.kg && S.kg > 4 ? S.kg : 4;
+    var nextKg = Math.max(4, Math.min(RULES.maxKg, cur + (act === "kg+" ? RULES.stepKg : -RULES.stepKg)));
+    S.kg = nextKg;
+    document.querySelectorAll('[data-act="kg"]').forEach(function (b) { b.setAttribute("aria-pressed", parseFloat(b.getAttribute("data-kg")) === S.kg); });
+    $("more").outerHTML = moreRow();
+    var again = document.querySelector('[data-act="' + act + '"]'); if (again && !again.disabled) again.focus(); else { var other = document.querySelector('#more button:not(:disabled)'); if (other) other.focus(); }
+    setStage(visWeight(S.kg)); syncTicket(); syncNext(route); save();
+  }
+  else if (act === "decor") {
+    var i = S.decor.indexOf(id);
+    if (i >= 0) S.decor.splice(i, 1); else S.decor.push(id);
+    S.lastDecor = i >= 0 ? null : id;
+    el.setAttribute("aria-pressed", i < 0);
+    setStage(visDecor()); syncTicket(); save();
+  }
+  else if (act === "q+" || act === "q-") {
+    var q = Math.max(0, Math.min(30, (S.daily[id] || 0) + (act === "q+" ? 1 : -1)));
+    if (q) S.daily[id] = q; else delete S.daily[id];
+    S.lastDaily = id; S.mode = "daily";
+    var item = el.closest(".item");
+    item.classList.toggle("has", q > 0);
+    item.querySelector("output").textContent = q;
+    item.querySelector('[data-act="q-"]').disabled = q === 0;
+    item.querySelector('[data-act="q+"]').disabled = q >= 30;
+    if (el.disabled) item.querySelector('[data-act="q+"]').focus();
+    $("base").textContent = money(dailySum()) + NB + t("uah");
+    setStage(visDaily(q ? id : firstDaily())); syncTicket(); syncNext(route); save();
+  }
+  else if (act === "msg" || act === "copy") { copyText(orderText()); }
+});
+document.addEventListener("input", function (e) {
+  if (e.target.id === "wish") { S.wish = e.target.value; save(); if (stageKey && stageKey.indexOf("decor:text") === 0) setStage(visDecor()); }
+  if (e.target.id === "date") {
+    S.date = parseIso(e.target.value) ? e.target.value : "";
+    var d = parseIso(S.date);
+    var w = $("warn");
+    w.hidden = !(d && daysAhead(d) < RULES.leadDays);
+    /* phone: the warning appears under the field, below the fold - bring it clear of the bottom bar */
+    if (!w.hidden) w.scrollIntoView({ block: "nearest" });
+    setStage(visLeaf()); syncTicket(); syncNext("date"); save();
+  }
+});
+/* The date field opens the calendar on a click or tap ANYWHERE on it (not only the icon), and on Enter / Space.
+   Typing stays possible. Older Safari has no showPicker(): there the native tap already opens the wheel. */
+function openPicker(el) { try { if (typeof el.showPicker === "function") el.showPicker(); } catch (e) {} }
+document.addEventListener("click", function (e) { if (e.target.id === "date") openPicker(e.target); });
+document.addEventListener("keydown", function (e) {
+  if (e.target.id === "date" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openPicker(e.target); }
+});
+/* Desktop: hovering or tabbing through answers previews them on the stage. */
+function preview(e) {
+  if (!canHover.matches && e.type !== "focusin") return;
+  var el = e.target.closest && e.target.closest('[data-act="fill"],[data-act="kg"]');
+  if (!el) return;
+  if (el.getAttribute("data-act") === "fill") setStage(visFilling(el.getAttribute("data-id")));
+  else setStage(visWeight(parseFloat(el.getAttribute("data-kg"))));
+}
+function unpreview(e) {
+  var route = routeFromHash();
+  if (route !== "filling" && route !== "weight") return;
+  var to = e.relatedTarget;
+  if (to && to.closest && to.closest('[data-act="fill"],[data-act="kg"]')) return;
+  setStage(stageFor(route));
+}
+$("pane").addEventListener("pointerover", preview);
+$("pane").addEventListener("focusin", preview);
+$("pane").addEventListener("pointerout", function (e) { if (canHover.matches) unpreview(e); });
+$("pane").addEventListener("focusout", unpreview);
+
+/* Phone keyboard open: release the sticky photo so the field stays visible. */
+document.addEventListener("focusin", function (e) { if (e.target.id === "wish") $("app").setAttribute("data-sticky", "0"); });
+document.addEventListener("focusout", function (e) { if (e.target.id === "wish" && routeFromHash() === "decor") $("app").setAttribute("data-sticky", "1"); });
+
+$("brand").addEventListener("click", function (e) { e.preventDefault(); S.ret = false; go("cover"); });
+window.addEventListener("hashchange", function () { clearTimeout(advTimer); render(); });
+window.HSC = { state: S, orderText: orderText, i18n: I18N };
+render();
+})();
+</script>
+</body>
+</html>
