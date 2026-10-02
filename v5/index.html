@@ -220,10 +220,11 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 /* phone bottom bar */
 .bar{display:none}
 
-/* ---------- phones and narrow tablets: the stage is a sticky strip ---------- */
+/* ---------- phones and narrow tablets: no sticky stage (owner, 02.10: "give up this cake in the mobile version") ----------
+   The whole cut photo is an ordinary picture at the top of the first screen and scrolls away with the page; the
+   layers are named once in a static block (.layers, in the "taste" section); only the header and the bar stay pinned. */
 @media (max-width:899px) and (min-height:501px){
-  /* the strip: at most 30% of the screen, and small enough that 55% stays for the content between it and the bar */
-  :root{--hh:52px;--bar:calc(72px + env(safe-area-inset-bottom,0px));--sh:min(29.5vh,calc(45vh - var(--hh) - var(--bar) - 7px));--lh:26px}
+  :root{--hh:52px;--bar:calc(72px + env(safe-area-inset-bottom,0px));--sh:min(40vh,calc(100vh - var(--hh) - var(--bar) - 230px))}
   body{font-size:16px}
   .top{gap:8px;padding:0 12px}
   .brand{font-size:16px}
@@ -231,25 +232,13 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
   .top .btn{display:none}
   .lang button{min-width:44px}
   .assembly{display:block}
-  .stage{--pw:calc(var(--sh) / .96 * .6667);
-    width:100%;height:var(--sh);z-index:10;background:var(--ground);overflow:hidden;border-bottom:1px solid var(--line)}
-  /* phones: the strip is a window that travels up the cut, zoomed on the layer being named (script: phoneView).
-     The photo fills the strip; the name of the layer sits in a row at the bottom of the strip, and a dot on the
-     layer with a line down to the name ties the two. The whole cake is shown at first paint (the opening moment). */
-  .stage .cake{transform-origin:0 0}
-  #stage > #labels{position:absolute;left:0;right:0;top:auto;bottom:0;height:var(--lh);z-index:3;background:var(--ground);border-top:1px solid var(--line)}
-  #stage > #labels li{top:auto;bottom:0;left:auto;right:16px;width:auto;max-width:calc(100% - 32px);transform:none;
-    font-size:15px;line-height:calc(var(--lh) - 1px);font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  #stage > #labels li::before,#stage > #labels li::after{display:none}
-  #stage > #labels li:not(.cur){opacity:0}
-  .mark{display:block;position:absolute;right:20px;width:9px;bottom:var(--lh);z-index:2;pointer-events:none}
-  .mark::before{content:"";position:absolute;left:4px;top:0;bottom:0;width:1.5px;background:var(--butter);box-shadow:0 0 0 1px rgba(43,24,16,.55)}
-  .mark::after{content:"";position:absolute;left:0;top:-4.5px;width:9px;height:9px;border-radius:50%;background:var(--butter);box-shadow:0 0 0 1.5px var(--ink)}
-  .stage.fit > #labels,.stage.fit .mark{opacity:0}
+  /* the picture: the cake region of the photo (rows .257 to .857 = cream top to stand rim) fitted to the box */
+  .stage{position:relative;top:auto;width:100%;height:var(--sh);overflow:hidden;background:var(--ground)}
+  .stage .cake{left:0;bottom:auto;top:calc(var(--sh) / .6 * -.257);width:calc(var(--sh) / .9);height:calc(var(--sh) / .6);aspect-ratio:auto}
+  .stage .labels,.stage .cake-slab{display:none}
   .story{padding:0 16px}
-  .blk{min-height:66vh;padding:30px 0 40px}
-  .blk.hero{min-height:calc(100vh - var(--hh) - var(--sh) - var(--bar));padding:18px 0 12px;justify-content:flex-start}
-  .blk.last{min-height:calc(100vh - var(--hh) - var(--sh));padding-bottom:calc(var(--bar) + 24px)}
+  .blk,.blk.last{min-height:0;padding:30px 0 40px;scroll-margin-top:var(--hh)}
+  .blk.hero{min-height:0;padding:16px 0 12px;justify-content:flex-start}
   .hero h1{font-size:clamp(27px,8vw,34px)}
   .hero h1 .h1b{margin-top:8px;font-size:17px}
   .hero .sub{margin-top:10px;font-size:15.5px;line-height:1.4}
@@ -270,9 +259,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 }
 @supports (height:1svh){
   @media (max-width:899px) and (min-height:501px){
-    :root{--sh:min(29.5svh,calc(45svh - var(--hh) - var(--bar) - 7px))}
-    .blk.hero{min-height:calc(100svh - var(--hh) - var(--sh) - var(--bar))}
-    .blk.last{min-height:calc(100svh - var(--hh) - var(--sh))}
+    :root{--sh:min(40svh,calc(100svh - var(--hh) - var(--bar) - 230px))}
   }
 }
 /* narrow phones (360, 375): brand, draft note and the 44 px language buttons must share one row */
@@ -284,17 +271,19 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 @media (max-width:389px){
   .draft{white-space:normal;max-width:86px;text-align:center;line-height:1.15;font-size:10px;padding:4px 7px;border-radius:10px}
 }
-/* reduced motion on phones: the cake is whole, the page is a normal page */
-@media (max-width:899px) and (min-height:501px) and (prefers-reduced-motion:reduce){
-  .stage{position:relative;top:0}
-  .labels{display:none}
-  .blk,.blk.hero,.blk.last{min-height:0}
-  .blk.last{padding-bottom:40px}
-}
+/* reduced motion on phones: the same still picture (phones have no motion on the stage at all) */
 .no-js .labels{display:none}
-.mark{display:none}
-@media (max-width:899px) and (min-height:501px){.js .mark{display:block}}
-@media (max-width:899px) and (min-height:501px) and (prefers-reduced-motion:reduce){.js .mark{display:none}}
+/* the layers named once, as ordinary content (phones only; desktop names them on the stage) */
+.layers{display:none}
+@media (max-width:899px) and (min-height:501px){
+  .layers{display:block;margin:22px 0 6px;--sp:min(250px,64vw)}
+  .layers ol{display:grid;gap:5px}
+  .layers li{display:grid;grid-template-columns:calc(var(--sp) * .84) minmax(0,1fr);align-items:center;column-gap:12px}
+  .layers .sl{position:relative;display:block;overflow:hidden;width:calc(var(--sp) * .84);height:calc((var(--to) - var(--from)) * var(--sp) * 1.5);border-radius:3px}
+  .layers .sl img{position:absolute;left:0;top:calc(var(--from) * var(--sp) * -1.5);width:var(--sp);max-width:none;height:auto}
+  .layers b{font-size:15px;line-height:1.25;font-weight:600}
+  .layers figcaption{margin-top:10px;font-size:15px;color:var(--ink2)}
+}
 
 /* ---------- questionnaire ---------- */
 html.quiz-open,html.quiz-open body{overflow:hidden}
@@ -441,7 +430,6 @@ textarea::placeholder{color:#7a5f54}
       </div>
       <ol class="labels" id="labels" aria-hidden="true"></ol>
     </div>
-    <span class="mark" id="mark" aria-hidden="true"></span>
   </div>
 
   <div class="story" id="story">
@@ -456,6 +444,7 @@ textarea::placeholder{color:#7a5f54}
       <h2 data-i18n="tasteH">Смак видно на розрізі</h2>
       <p class="lead" data-i18n="tasteP1">Це справжній розріз торта, який я спекла. Не малюнок і не фото з інтернету.</p>
       <p class="lead" data-i18n="tasteP2">Бісквіт вологий, не сухий. Крем не прісний. Начинки стільки ж, скільки коржів.</p>
+      <figure class="layers" id="layers"><ol id="layersList"></ol></figure>
     </section>
 
     <section class="blk" data-band="2" id="inside">
@@ -1025,7 +1014,16 @@ function renderLists() {
   $("#weightTable").innerHTML = TABLE_WEIGHTS.map(w =>
     `<li><b class="num">${fmtW(w)} ${esc(t("kg"))}</b><span>${esc(guestsHint(w))}</span></li>`).join("");
 }
+function renderLayers() {
+  const box = $("#layersList");
+  if (!box) return;
+  box.innerHTML = BANDS.slice().reverse().map(b => {
+    const to = Math.min(b.to, 0.87);   // the stand row stops at the rim (below it: the stem and the backdrop)
+    return `<li><span class="sl" style="--from:${b.from};--to:${to}"><img src="img/snickers-cut.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></span><b>${esc(t(b.key))}</b></li>`;
+  }).join("");
+}
 function renderLabels() {
+  renderLayers();
   $("#labels").innerHTML = BANDS.map((b, i) =>
     `<li data-i="${i}" style="--y:${b.y};--x:${b.x}">${esc(t(b.key))}</li>`).join("");
   painted = null;
@@ -1063,66 +1061,16 @@ let painted = null, queued = false;
 const INTRO_HOLD = 1200, INTRO_LIFT = 1300;
 let intro = null;
 
-/* ===== phones: the strip is a window that travels up the cut =====
-   Desktop erases the cake from the top; a phone strip cannot afford that (half a screen of empty backdrop). On a
-   phone the photo is zoomed so the cut fills the strip, and the window travels from the stand up to the cream,
-   centred on the layer being named; the name sits in a row at the bottom of the strip, tied to its layer by a
-   dot and a line. m = 0 is the whole cake fitted into the strip (first paint), m = 1 the zoomed window. */
-const cakeEl = $("#cake"), labelsEl = $("#labels"), markEl = $("#mark");
-const PH_FIT_TOP = 0.257, PH_FIT_SPAN = 0.6;    // fitted view: rows 0.257..0.857 = cream top to stand rim
-const PH_ZOOM_X = 0.82;                         // zoomed view: the strip shows photo x 0..0.82 (the cut, up to the cream wall)
-const PH_TOP = 0.285, PH_BOTTOM = 0.86;         // the window never leaves the cake: cream top .. stand rim
-const phoneMode = () => phoneMq.matches && !reduceMq.matches;
-function placeLabels() {
-  const home = phoneMq.matches ? stage : cakeEl;
-  if (labelsEl.parentNode !== home) home.appendChild(labelsEl);
-}
-function phoneView(m, c, named) {
-  const W = stage.clientWidth, H = stage.clientHeight;
-  const lh = parseFloat(getComputedStyle(stage).getPropertyValue("--lh")) || 26;
-  const winH = H - lh * m;
-  const P0 = H / (1.5 * PH_FIT_SPAN), P1 = W / PH_ZOOM_X, h1 = winH / (1.5 * P1);
-  const t1 = Math.min(Math.max(c - h1 / 2, PH_TOP), PH_BOTTOM - h1);
-  const P = P0 + (P1 - P0) * m, top = PH_FIT_TOP + (t1 - PH_FIT_TOP) * m;
-  const ty = -top * 1.5 * P;
-  cakeEl.style.width = P.toFixed(2) + "px";
-  cakeEl.style.height = (1.5 * P).toFixed(2) + "px";
-  cakeEl.style.bottom = "auto"; cakeEl.style.top = "0"; cakeEl.style.aspectRatio = "auto";
-  cakeEl.style.transform = `translate3d(0, ${ty.toFixed(2)}px, 0)`;
-  stage.classList.toggle("fit", m < 0.999);
-  if (named !== undefined) {
-    const y = ty + BANDS[named].y * 1.5 * P;
-    markEl.style.top = Math.max(8, Math.min(winH - 8, y)).toFixed(1) + "px";
-  }
-  stage.dataset.win = top.toFixed(4) + "," + (top + winH / (1.5 * P)).toFixed(4);
-}
-function desktopView() {
-  ["width", "height", "bottom", "top", "aspectRatio", "transform"].forEach(k => { cakeEl.style[k] = ""; });
-  stage.classList.remove("fit");
-  delete stage.dataset.win;
-}
+/* ===== phones: no stage motion at all =====
+   Phones show the whole cut photo as an ordinary picture (CSS) that scrolls away with the page, and name the layers
+   once in the static .layers block. The scroll assembly, the opening moment and the slab are desktop-only. */
+const phoneStill = () => phoneMq.matches;
 
 function startIntro() {
-  if (reduceMq.matches || window.scrollY > 2) { stage.dataset.intro = "off"; measure(true); return; }
+  if (phoneStill() || reduceMq.matches || window.scrollY > 2) { stage.dataset.intro = "off"; measure(true); return; }
   intro = { t0: performance.now() };
   stage.dataset.intro = "on";
   const last = BANDS.length - 1;
-  if (phoneMode()) {
-    // phone: the whole cake fitted into the strip, holds, then the window zooms into the stand
-    placeLabels();
-    base.style.clipPath = ""; base.style.webkitMaskImage = base.style.maskImage = ""; slab.style.opacity = "0";
-    $$("#labels li").forEach((li, i) => { li.classList.toggle("on", i === 0); li.classList.toggle("cur", i === 0); });
-    stage.dataset.bands = String(BANDS.length); stage.dataset.active = "-1";
-    phoneView(0, BANDS[0].y, 0);
-    const ptick = now => {
-      if (!intro) return;
-      const k = clamp01((now - intro.t0 - INTRO_HOLD) / INTRO_LIFT), e = k * k * (3 - 2 * k);
-      phoneView(e, BANDS[0].y, 0);
-      if (k >= 1) endIntro("done"); else requestAnimationFrame(ptick);
-    };
-    requestAnimationFrame(ptick);
-    return;
-  }
   const tick = now => {
     if (!intro) return;
     const k = clamp01((now - intro.t0 - INTRO_HOLD) / INTRO_LIFT);
@@ -1146,6 +1094,7 @@ function endIntro(state) {
 function measure(force) {
   if (reduceMq.matches) { if (intro) { intro = null; stage.dataset.intro = "off"; } paint(BANDS.length - 1, -1, 0, force); return; }
   if (intro) return;
+  if (phoneStill()) { paint(BANDS.length - 1, -1, 0, force); return; }   // phones: no scroll-driven stage
   const vh = window.innerHeight;
   const phone = phoneMq.matches;
   const zoneTop = phone ? stage.getBoundingClientRect().bottom : $(".top").getBoundingClientRect().bottom;
@@ -1167,30 +1116,16 @@ function paint(settled, active, tt, force) {
   painted = key;
   const last = BANDS.length - 1;
   const still = reduceMq.matches;
-  placeLabels();
-  if (phoneMq.matches) {
-    // phone: no erasing; the window travels to the layer being named (reduced motion: the whole cake, still)
+  if (phoneStill()) {
+    // phones: the still picture - no clip, no mask, no slab; the stage labels are hidden by CSS
     base.style.clipPath = ""; base.style.webkitMaskImage = base.style.maskImage = "";
     slab.style.opacity = "0";
-    const shown = active > 0 && tt >= 0.5 ? active : settled;
-    if (still) phoneView(0, BANDS[0].y);
-    else {
-      const e = active > 0 ? tt * tt * (3 - 2 * tt) : 0;
-      const c = active > 0 ? BANDS[settled].y + (BANDS[active].y - BANDS[settled].y) * e : BANDS[settled].y;
-      phoneView(1, c, shown);
-    }
-    $$("#labels li").forEach((li, i) => {
-      li.classList.toggle("on", still || i <= shown);
-      li.classList.toggle("cur", !still && i === shown);
-    });
-    stage.dataset.bands = String(settled + 1);
-    stage.dataset.active = String(active);
-    stage.dataset.named = String(shown);
+    $$("#labels li").forEach(li => { li.classList.add("on"); li.classList.remove("cur"); });
+    stage.dataset.bands = String(BANDS.length);
+    stage.dataset.active = "-1";
     stage.dataset.cut = "0";
     return;
   }
-  desktopView();
-  delete stage.dataset.named;
   // base: everything already placed, soft edge on the reveal line.
   // Reduced motion: the photo is a plain image - no clip, no mask, nothing for a first paint to wait on.
   if (still) {
