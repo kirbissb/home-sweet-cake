@@ -223,6 +223,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
 /* festive whole cake on the phone first screen (CEO 02.10, phone only; desktop keeps its stage) */
 .hero-cake{display:none}
 
+.fl-short{display:none}
 /* ---------- phones and narrow tablets: no sticky stage (owner, 02.10: "give up this cake in the mobile version") ----------
    The whole cut photo is an ordinary picture at the top of the first screen and scrolls away with the page; the
    layers are named once in a static block (.layers, in the "taste" section); only the header and the bar stay pinned. */
@@ -239,6 +240,9 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
   .stage{position:relative;top:auto;width:100%;height:var(--sh);overflow:hidden;background:var(--ground)}
   .stage .cake{left:0;bottom:auto;top:calc(var(--sh) / .6 * -.257);width:calc(var(--sh) / .9);height:calc(var(--sh) / .6);aspect-ratio:auto}
   .stage .labels,.stage .cake-slab{display:none}
+  #inside{display:none}   /* CEO 02.10: the fillings list repeats quiz step 1 and the price repeats #price - phones skip it; #price gets a button to the fillings step */
+  .fl-short{display:block}
+  .fl-short .btn{margin-top:16px}
   .on-stage{display:none}   /* no cut photo on phones, so no 'this cake is on the photo' */
   #taste{display:none}   /* CEO 02.10: the whole 'Смак видно на розрізі' block (text + layers) is gone on phones */
   .stage{display:none}   /* CEO 02.10 21:5x: no cake on the phone first screen - the cut is shown once, in the layers block */
@@ -473,6 +477,7 @@ textarea::placeholder{color:#7a5f54}
         <p class="sub" id="priceSub" data-i18n="priceSub">Ціна за кілограм залежить від начинки. Декор рахую окремо.</p>
         <p class="price-big num"><u class="ph" id="celRange"></u> <small data-i18n="perKg">грн/кг</small></p>
         <p data-i18n="celMin">Найменший тортик - 1,5 кг. Декор окремо.</p>
+        <div class="fl-short"><button type="button" class="btn js-order" data-i18n="seeFill">Подивитись начинки</button></div>
         <div class="duo">
           <figure class="shot standin" data-photo="roses">
             <span class="frame"><img src="img/roses.webp" width="757" height="1068" alt="Торт з рожевими вафельними трояндами в прозорій коробці" data-i18n-alt="altRoses" loading="lazy" decoding="async"></span>
@@ -630,6 +635,7 @@ textarea::placeholder{color:#7a5f54}
   "tasteP1": "Це справжній розріз торта, який я спекла. Не малюнок і не фото з інтернету.",
   "tasteP2": "Бісквіт вологий, не сухий. Крем не прісний. Начинки стільки ж, скільки коржів.",
   "insideH": "Що всередині",
+  "seeFill": "Подивитись начинки",
   "insideSub": "Вісім начинок. Біля кожної - з яких шарів вона складається.",
   "insideNote": "Фото в розрізі поки є для двох начинок. Інші з'являться, коли я їх спечу.",
   "onStage": "цей тортик на фото",
@@ -773,6 +779,7 @@ textarea::placeholder{color:#7a5f54}
   "tasteP1": "Это настоящий разрез торта, который я испекла. Не рисунок и не фото из интернета.",
   "tasteP2": "Бисквит влажный, не сухой. Крем не пресный. Начинки столько же, сколько коржей.",
   "insideH": "Что внутри",
+  "seeFill": "Посмотреть начинки",
   "insideSub": "Восемь начинок. Возле каждой - из каких слоёв она состоит.",
   "insideNote": "Фото в разрезе пока есть для двух начинок. Остальные появятся, когда я их испеку.",
   "onStage": "этот тортик на фото",
