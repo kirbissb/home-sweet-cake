@@ -239,7 +239,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;c
   .stage{position:relative;top:auto;width:100%;height:var(--sh);overflow:hidden;background:var(--ground)}
   .stage .cake{left:0;bottom:auto;top:calc(var(--sh) / .6 * -.257);width:calc(var(--sh) / .9);height:calc(var(--sh) / .6);aspect-ratio:auto}
   .stage .labels,.stage .cake-slab{display:none}
-  #taste h2{display:none}   /* CEO 02.10 22:0x: no 'Смак видно на розрізі' heading on phones */
+  .on-stage{display:none}   /* no cut photo on phones, so no 'this cake is on the photo' */
+  #taste{display:none}   /* CEO 02.10: the whole 'Смак видно на розрізі' block (text + layers) is gone on phones */
   .stage{display:none}   /* CEO 02.10 21:5x: no cake on the phone first screen - the cut is shown once, in the layers block */
   .story{padding:0 16px}
   .blk,.blk.last{min-height:0;padding:30px 0 40px;scroll-margin-top:var(--hh)}
@@ -1014,7 +1015,7 @@ function renderLists() {
   const L = S.lang;
   $("#fillList").innerHTML = FILLINGS.map(f => {
     const img = f.id === "berry" ? `<img src="${f.img}" alt="" loading="lazy" decoding="async">` : "";
-    const tag = f.id === "snickers" ? ` <span class="note">(${esc(t("onStage"))})</span>` : "";
+    const tag = f.id === "snickers" ? ` <span class="note on-stage">(${esc(t("onStage"))})</span>` : "";
     return `<li class="${img ? "has-img" : ""}">${img}<b>${esc(f[L])}${tag}</b><span class="pr num"><u class="ph">${fmt(f.price)}</u> ${esc(t("perKg"))}</span><span class="ly">${esc(f.L[L].join(", "))}</span></li>`;
   }).join("");
   const prices = FILLINGS.map(f => f.price);
